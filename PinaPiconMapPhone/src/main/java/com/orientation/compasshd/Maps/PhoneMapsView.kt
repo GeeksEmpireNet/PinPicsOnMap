@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/30/20 4:30 PM
- * Last modified 1/30/20 4:24 PM
+ * Created by Elias Fazel on 1/30/20 5:17 PM
+ * Last modified 1/30/20 5:17 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -178,9 +178,9 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         (application as PinPicsOnMapApplication)
                 .dependencyGraph.inject(this@PhoneMapsView)
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.maps_view)
 
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)

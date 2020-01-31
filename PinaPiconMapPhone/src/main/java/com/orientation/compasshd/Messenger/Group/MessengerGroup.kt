@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/30/20 4:30 PM
- * Last modified 1/29/20 4:08 PM
+ * Created by Elias Fazel on 1/30/20 5:17 PM
+ * Last modified 1/30/20 5:17 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -120,9 +120,9 @@ class MessengerGroup : Activity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         (application as PinPicsOnMapApplication)
                 .dependencyGraph.inject(this@MessengerGroup)
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.group_messenger)
 
         linearLayoutManager = LinearLayoutManager(this@MessengerGroup, RecyclerView.VERTICAL, false)

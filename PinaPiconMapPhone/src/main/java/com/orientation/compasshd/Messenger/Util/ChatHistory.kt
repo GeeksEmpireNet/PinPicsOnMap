@@ -1,8 +1,8 @@
 /*
  * Copyright © 2020 By Geeks Empire.
  *
- * Created by Elias Fazel on 1/30/20 4:30 PM
- * Last modified 1/29/20 4:08 PM
+ * Created by Elias Fazel on 1/30/20 5:17 PM
+ * Last modified 1/30/20 5:17 PM
  *
  * Licensed Under MIT License.
  * https://opensource.org/licenses/MIT
@@ -76,9 +76,9 @@ class ChatHistory : Activity() {
     var lastVisibleItem: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         (application as PinPicsOnMapApplication)
                 .dependencyGraph.inject(this@ChatHistory)
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.chat_history)
 
         linearLayoutManager = LinearLayoutManager(this@ChatHistory, RecyclerView.VERTICAL, false)
