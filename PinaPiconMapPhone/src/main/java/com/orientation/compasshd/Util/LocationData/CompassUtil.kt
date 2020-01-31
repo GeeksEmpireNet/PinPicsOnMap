@@ -85,9 +85,9 @@ class CompassUtil(context: Context) : SensorEventListener {
                 mGeomagnetic[2] = alpha * mGeomagnetic[2] + (1 - alpha) * event.values[2]
             }
             if (event.sensor.type == Sensor.TYPE_ORIENTATION) {
-                XYZ[1] = Math.round(event.values[0]).toString()
-                XYZ[2] = Math.round(event.values[1]).toString()
-                XYZ[3] = Math.round(event.values[2]).toString()
+                XYZ[1] = (event.values[0]).toString()
+                XYZ[2] = (event.values[1]).toString()
+                XYZ[3] = (event.values[2]).toString()
             }
 
             val R = FloatArray(9)
