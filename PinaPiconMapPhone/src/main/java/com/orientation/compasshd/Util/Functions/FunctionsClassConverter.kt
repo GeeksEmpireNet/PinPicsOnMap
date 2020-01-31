@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.net.URL
 import java.nio.charset.Charset
+import java.security.InvalidKeyException
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
@@ -42,22 +43,21 @@ class FunctionsClassConverter @Inject constructor (var context: Context) : Inter
         return SecretKeySpec(passwordKey.toByteArray(), "AES")
     }
 
-    fun generatePasswordKey(rawString: String): String {
+    private fun generatePasswordKey(rawString: String): String {
         val rawPasswordString = rawString + "0000000000000000"
         val passwordKey: String = rawPasswordString.substring(0, 16)
         return passwordKey
     }
 
-    @Throws(Exception::class)
+    @Throws(InvalidKeyException::class)
     fun encryptEncodedData(plainText: String, rawString: String): ByteArray {
         //First Encode
         //Second Encrypt
 
         val encodedText: String = encodeStringBase64(plainText)
 
-        var cipher: Cipher? = null
-        cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
-        cipher!!.init(Cipher.ENCRYPT_MODE, generateEncryptionKey(generatePasswordKey(rawString)))
+        val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
+        cipher.init(Cipher.ENCRYPT_MODE, generateEncryptionKey(generatePasswordKey(rawString)))
 
         return cipher.doFinal(encodedText.toByteArray(Charset.defaultCharset()))
     }

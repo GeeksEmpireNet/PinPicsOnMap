@@ -26,36 +26,24 @@ class BindService : Service() {
         return null
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForeground(333, bindServiceHigh())
-        } else {
-            startForeground(333, bindServiceLow())
-        }
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        startForeground(333, if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { bindServiceHigh() } else { bindServiceLow() })
 
         return Service.START_STICKY
     }
 
-    override fun onCreate() {
-        super.onCreate()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    protected fun bindServiceLow(): Notification {
-        val mBuilder = Notification.Builder(this)
-        mBuilder.setContentTitle(getString(R.string.full_app_name))
-        mBuilder.setContentText(getString(R.string.bindDesc))
-        mBuilder.setTicker(getString(R.string.full_app_name))
-        mBuilder.setSmallIcon(R.drawable.ic_notification)
-        mBuilder.setColor(getColor(R.color.default_color))
+    private fun bindServiceLow(): Notification {
+        val notificationBuilder = Notification.Builder(this)
+        notificationBuilder.setContentTitle(getString(R.string.full_app_name))
+        notificationBuilder.setContentText(getString(R.string.bindDesc))
+        notificationBuilder.setTicker(getString(R.string.full_app_name))
+        notificationBuilder.setSmallIcon(R.drawable.ic_notification)
+        notificationBuilder.setColor(getColor(R.color.default_color))
 
         val res = resources
         val bM = BitmapFactory.decodeResource(res, R.drawable.ic_launcher)
-        mBuilder.setLargeIcon(bM)
-        mBuilder.setAutoCancel(false)
+        notificationBuilder.setLargeIcon(bM)
+        notificationBuilder.setAutoCancel(false)
 
         val open = Intent(this, TimeCheckCompass::class.java)
         val main = PendingIntent.getActivity(this, 0, open, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -63,32 +51,32 @@ class BindService : Service() {
         val settingGUI = Intent(this, SettingGUI::class.java)
         val pV = PendingIntent.getActivity(this, 0, settingGUI, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        mBuilder.addAction(0, getString(R.string.preferencesCompass), pV)
-        mBuilder.setContentIntent(main)
+        notificationBuilder.addAction(0, getString(R.string.preferencesCompass), pV)
+        notificationBuilder.setContentIntent(main)
 
-        return mBuilder.build()
+        return notificationBuilder.build()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    protected fun bindServiceHigh(): Notification {
+    private fun bindServiceHigh(): Notification {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val notificationChannel = NotificationChannel(packageName, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH)
         notificationManager.createNotificationChannel(notificationChannel)
 
-        val mBuilder = Notification.Builder(this)
+        val notificationBuilder = Notification.Builder(this, packageName)
 
-        mBuilder.setContentTitle(getString(R.string.full_app_name))
-        mBuilder.setContentText(getString(R.string.bindDesc))
-        mBuilder.setTicker(getString(R.string.full_app_name))
-        mBuilder.setSmallIcon(R.drawable.ic_notification)
-        mBuilder.setColor(getColor(R.color.default_color))
+        notificationBuilder.setContentTitle(getString(R.string.full_app_name))
+        notificationBuilder.setContentText(getString(R.string.bindDesc))
+        notificationBuilder.setTicker(getString(R.string.full_app_name))
+        notificationBuilder.setSmallIcon(R.drawable.ic_notification)
+        notificationBuilder.setColor(getColor(R.color.default_color))
 
         val res = resources
         val bM = BitmapFactory.decodeResource(res, R.drawable.ic_launcher)
-        mBuilder.setLargeIcon(bM)
-        mBuilder.setAutoCancel(false)
-        mBuilder.setChannelId(packageName)
+        notificationBuilder.setLargeIcon(bM)
+        notificationBuilder.setAutoCancel(false)
+        notificationBuilder.setChannelId(packageName)
 
         val open = Intent(this, TimeCheckCompass::class.java)
         val main = PendingIntent.getActivity(this, 0, open, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -96,9 +84,9 @@ class BindService : Service() {
         val settingGUI = Intent(this, SettingGUI::class.java)
         val pV = PendingIntent.getActivity(this, 0, settingGUI, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        mBuilder.addAction(0, getString(R.string.preferencesCompass), pV)
-        mBuilder.setContentIntent(main)
+        notificationBuilder.addAction(0, getString(R.string.preferencesCompass), pV)
+        notificationBuilder.setContentIntent(main)
 
-        return mBuilder.build()
+        return notificationBuilder.build()
     }
 }
