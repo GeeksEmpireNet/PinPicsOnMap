@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 11/11/19 7:26 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark"
+    android:id="@+id/fullView">
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/AdUnitBanner" />
+
+    <Toolbar
+        android:id="@+id/chatToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/adView"
+        android:background="@color/light">
+
+        <ImageView
+            android:id="@+id/chatLogo"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="19dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/draw_people_heads"
+            android:background="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/chatSummary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="19dp"
+            android:padding="7dp"
+            android:textSize="13sp"
+            android:background="@android:color/transparent" />
+    </Toolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/chatToolbar"
+        android:cacheColorHint="@android:color/transparent"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="3dp"
+        android:requiresFadingEdge="vertical"
+        android:scrollbars="none"
+        android:smoothScrollbar="true"
+        android:background="@color/transparent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alwaysDrawnWithCache="true"
+                android:drawSelectorOnTop="true"
+                android:isScrollContainer="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingTop="5dp"
+                android:paddingStart="19dp"
+                android:paddingEnd="19dp"
+                android:persistentDrawingCache="animation|scrolling"
+                android:saveEnabled="true"
+                android:background="@color/transparent" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <net.geeksempire.loadingspin.SpinKitView
+        android:id="@+id/progressBar"
+        android:layout_width="133dp"
+        android:layout_height="133dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:padding="33dp"
+        app:SpinKit_Style="CubeGrid"
+        app:SpinKit_Color="@color/default_color_light_transparent" />
+
+</RelativeLayout>

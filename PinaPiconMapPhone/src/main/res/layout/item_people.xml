@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 11/11/19 7:26 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="7dp"
+    android:layout_marginBottom="7dp"
+    android:background="@color/transparent"
+    android:id="@+id/fullItemView">
+
+    <net.geekstools.imageview.customshapes.ShapesImage
+        android:id="@+id/theChatImage"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:scaleType="centerCrop"
+        app:shape="circle" />
+
+    <TextView
+        android:id="@+id/theChatName"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_toEndOf="@id/theChatImage"
+        android:paddingStart="17dp"
+        android:paddingEnd="13dp"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:ellipsize="end"
+        android:typeface="monospace"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/default_color_light"
+        android:textSize="21sp"
+        android:background="@color/transparent" />
+
+</RelativeLayout>

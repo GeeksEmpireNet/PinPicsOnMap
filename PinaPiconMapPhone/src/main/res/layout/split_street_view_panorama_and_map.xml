@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 1/11/20 4:12 AM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="173dp"
+        class="com.google.android.gms.maps.SupportMapFragment" />
+
+    <fragment
+        android:id="@+id/streetviewpanorama"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/map"
+        class="com.google.android.gms.maps.SupportStreetViewPanoramaFragment" />
+
+    <TextView
+        android:id="@+id/streetError"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/map"
+        android:gravity="center"
+        android:padding="7dp"
+        android:text="@string/streetError"
+        android:textSize="17sp"
+        android:textColor="@color/red"
+        android:background="@color/dark"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/pinnedLocation"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/map"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="-23dp"
+        android:enabled="false"
+        android:src="@drawable/ripple_effect_location" />
+
+</RelativeLayout>
+

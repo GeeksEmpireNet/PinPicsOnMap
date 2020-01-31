@@ -1,0 +1,47 @@
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 1/29/20 1:45 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:context="com.orientation.compasshd.Maps.WatchMapsView">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/currentLocation"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="7dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:enabled="false"
+        android:src="@drawable/ripple_effect_location" />
+
+    <ImageView
+        android:id="@+id/switchCamera"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="7dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ripple_effect_switch" />
+
+    <android.support.wearable.view.DismissOverlayView
+        android:id="@+id/dismissOverly"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+
+</RelativeLayout>

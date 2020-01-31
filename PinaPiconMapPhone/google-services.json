@@ -1,0 +1,65 @@
+{
+  "project_info": {
+    "project_number": "911032238335",
+    "firebase_url": "https://compass-c34b4.firebaseio.com",
+    "project_id": "compass-c34b4",
+    "storage_bucket": "compass-c34b4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:911032238335:android:0dc5086d8f3d9a51",
+        "android_client_info": {
+          "package_name": "com.orientation.compasshd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "911032238335-540o2657cvmldv1r3719io4j0gqvmmrd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orientation.compasshd",
+            "certificate_hash": "7055fb9cd9f652bc600522c06a083ddeaba165b5"
+          }
+        },
+        {
+          "client_id": "911032238335-rlp3d7d4oatqp6555uv639enbah5t8ag.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orientation.compasshd",
+            "certificate_hash": "af575106d98fb0eb7fbdc1126f6aaeafa3ac3623"
+          }
+        },
+        {
+          "client_id": "911032238335-j49al29f4bqkjp38adbmbogk4pujfgg8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orientation.compasshd",
+            "certificate_hash": "c4f7ba6ff825ee77e200fa6c3edc4a749be7baac"
+          }
+        },
+        {
+          "client_id": "911032238335-m7ei42f8q5fpm8vmno1u2knb74etkjvb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQ_Hh-zx17AF03_9WCSveeAM_Eu4QGK5A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "911032238335-m7ei42f8q5fpm8vmno1u2knb74etkjvb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-2920235108594210~4240753885"
+    }
+  ],
+  "configuration_version": "1"
+}

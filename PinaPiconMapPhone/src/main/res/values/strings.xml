@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 11/11/19 7:26 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<resources>
+
+    <string name="app_name">Pin Pics On Map</string>
+    <string name="full_app_name">Pin Pics On Map</string>
+    <string name="compass">Compass</string>
+    <string name="preferencesCompass">Preferences 🧭 </string>
+    <string name="remove">Press &amp; Hold to Reset to Default</string>
+    <string name="longclick">Press &amp; Hold to Maximize</string>
+    <string name="no_internet">No Internet</string>
+    <string name="refresh">Click Here to Refresh</string>
+    <string name="loading">Loading…</string>
+
+    <string name="weatherLoading">Weather Information 🔃 </string>
+    <string name="pinmap">Pin Pics On Map</string>
+    <string name="locationfind">I Want to Go to…</string>
+    <string name="clickToGallery">See More In Gallery 🖼 </string>
+    <string name="minimize">Minimize</string>
+    <string name="close">Close</string>
+
+    <string name="showStreetView">Show on Street View</string>
+    <string name="showGallery">Show on Gallery</string>
+    <string name="streetError">StreetView is not available for this location.\nYou can Change your Location on Map.</string>
+    <string name="pickedErrorMoreTwo">Please, Add One Or Two At A Time 🙂 To Have Better Quality ✨ </string>
+
+    <string name="permission_title">
+        <![CDATA[
+            <b>Always Enjoy & Remember Your Journeys</b>!
+        ]]>
+    </string>
+    <string name="permission_msg">
+        <![CDATA[
+            <b>Hi</b>&#8230; &#9786;<br/>
+            I need your permissions to <b>Create Floating Compass</b>, <b>Show Images on Map</b> & <b>Get Location Information</b>.<br/>
+        ]]>
+    </string>
+
+    <string name="locationPicked">Pin The Pic On Map</string>
+    <string name="pinPicked">Pin A Pic On Map</string>
+    <string name="pickGallery">Pick Pic From Gallery</string>
+    <string name="bestPlaceAround">Best Place Around</string>
+
+    <string name="small">Small</string>
+    <string name="medium">Medium</string>
+    <string name="large">Large</string>
+    <string name="miniCompass">Compass in Minimized View</string>
+    <string name="autoMini">Minimize Automatically</string>
+
+    <string name="sensor_alert">"Click Restart to Reactivate"</string>
+    <string name="bindDesc">THIS WILL REMOVE AUTOMATICALLY.</string>
+
+    <string name="downloading"> Downloading… ⬇ </string>
+    <string name="uploading"> Uploading… ⬆ </string>
+
+    <string name="thanks">Thanks in Advance 🙏 </string>
+    <string name="error" translatable="false">Error Occurred | Please, Try Again</string>
+
+    <string name="shareTitle" translatable="false">
+        Pin Pics On Map | Turn Map 🗺 To Your Personal Photo Gallery 🖼
+    </string>
+    <string name="shareSummary" translatable="false">
+        Always Remember Your #AdventurousJourney 🏞 | Memorize Your #AdventurousJourneys In Beautiful &amp; Mesmerizing Nature 🏞  | #SaveEarth #SaveNature 🌎 🌍 🌏  | By @GeeksEmpire
+    </string>
+    <string name="cloudBackup">Secure Synchronization</string>
+    <string name="doSync">Synchronize</string>
+    <string name="chatWithPeople">Chat With People</string>
+    <string name="chatWithPeopleHistory">History Of Chat With People</string>
+    <string name="connectToPeople">Connect To People</string>
+    <string name="sendMessage">Send Message</string>
+    <string name="editMessage">Edit Message</string>
+    <string name="messageSent">Sent</string>
+
+    <!-- Content Description | Hint -->
+    <string name="theUserImageHint">%1$s\'s Profile Picture</string>
+    <!-- Content Description | Hint -->
+
+    <string name="share" translatable="false">Share It With Your Friends</string>
+    <string name="purchase"> Purchase 💸 </string>
+    <string name="subscribe"> Subscribe 💸 </string>
+    <string name="donate"> Send Gift 🎁 </string>
+    <string name="restorePurchase">ℹ Click To Restore The Item ℹ</string>
+    <string name="cloudBackupDemoDescriptions">
+        <![CDATA[
+            🔵 <b><big>Cloud Synchronization</big></b> ☁ | Upload/Download Your Data Privately<br/>
+            &bull; Synchronize Your Pinned Pictures Data To Secure Servers <br/>
+            &bull; …<br/>
+        ]]>
+    </string>
+
+    <string name="invitation_title">
+        Pin Pics On Map 🏞 | Personal Photo Album on Map &amp; Always Remember Your Journeys
+    </string>
+    <string name="invitation_message">
+        🖼 Memorize Your Adventurous Journeys in Mesmerizing Nature 🏞  | #SaveEarth #SaveNature
+    </string>
+    <string name="alphaTitle">Thanks for Joining Beta Program. Always Appreciate your Feedback!</string>
+
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 1/28/20 2:10 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<resources>
+
+    <string name="rate" translatable="false">Please Rate &amp; Write Review</string>
+    <string name="updateAvailable" translatable="false">New Update Available | Go to Play Store to Install…!</string>
+
+    <string name="freeSubscriber">FreeSubscriber</string>
+
+    <string name="play_store_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
+
+    <string name="integerVersionCodeNewUpdateWear" translatable="false">integer_version_code_new_update_wear</string>
+    <string name="stringVersionNameNewUpdateWear" translatable="false">string_version_name_new_update_wear</string>
+    <string name="stringUpcomingChangeLogWear" translatable="false">string_upcoming_change_log_wear</string>
+
+    <string name="BETAintegerVersionCodeNewUpdateWear" translatable="false">beta_integer_version_code_new_update_wear</string>
+    <string name="BETAstringVersionNameNewUpdateWear" translatable="false">beta_string_version_name_new_update_wear</string>
+    <string name="BETAstringUpcomingChangeLogWear" translatable="false">beta_string_upcoming_change_log_wear</string>
+
+</resources>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 11/11/19 7:26 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <net.geeksempire.loadingspin.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/spinKit"
+        android:layout_width="330dp"
+        android:layout_height="330dp"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:padding="30dp"
+        app:SpinKit_Color="@color/light"
+        app:SpinKit_Style="CubeGrid" />
+
+    <TextView
+        android:id="@+id/agreementView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/spinKit"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="71dp"
+        android:gravity="start|center_vertical"
+        android:padding="3dp"
+        android:text="@string/agreement"
+        android:textStyle="bold"
+        android:textSize="13sp"
+        android:textColor="@color/default_color_light"
+        android:linksClickable="true" />
+
+    <TextView
+        android:id="@+id/policyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/agreementView"
+        android:layout_alignEnd="@id/spinKit"
+        android:gravity="end|center_vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="71dp"
+        android:layout_marginStart="13sp"
+        android:padding="3dp"
+        android:text="@string/policy"
+        android:textStyle="bold"
+        android:textSize="13sp"
+        android:textColor="@color/default_color_light"
+        android:linksClickable="true" />
+
+    <Button
+        android:id="@+id/agreed"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="13dp"
+        android:layout_alignStart="@id/agreementView"
+        android:layout_alignEnd="@id/policyView"
+        android:textAllCaps="false"
+        android:text="@string/agreed"
+        android:textColor="@color/light"
+        android:textSize="23sp"
+        android:background="@color/default_color_game_light" />
+
+</RelativeLayout>

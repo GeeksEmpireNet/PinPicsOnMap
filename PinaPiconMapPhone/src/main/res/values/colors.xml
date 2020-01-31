@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 11/11/19 7:26 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<resources>
+
+    <color name="default_color">#237DAE</color>
+    <color name="default_color_transparent_50">#80237dae</color>
+    <color name="default_color_transparent">#33237dae</color>
+    <color name="default_color_light">#008dda</color>
+    <color name="default_color_light_transparent">#80008dda</color>
+    <color name="default_color_darker">#0a415e</color>
+    <color name="default_color_darker_transparent">#C40A415E</color>
+    <color name="default_color_game">#ae2357</color>
+    <color name="default_color_game_light">#FF0061</color>
+
+    <color name="android_default">#30dd81</color>
+    <color name="red">#9b000e</color>
+    <color name="red_transparent">#4d9b000e</color>
+    <color name="green">#007b08</color>
+    <color name="blue">#002B7B</color>
+    <color name="red_bright_transparent">#c8ff0000</color>
+    <color name="purple">#672098</color>
+
+    <color name="shadow">#13000000</color>
+    <color name="warning_color">#FE5475</color>
+    <color name="hint_color">#42000000</color>
+    <color name="success_color">#1FD4AF</color>
+
+    <color name="online_color">#1c7ee7</color><!-- #4286F5 -->
+    <color name="offline_color">#333333</color>
+
+    <color name="light">#f2f7ff</color>
+    <color name="lighter">#fafbff</color>
+    <color name="light_transparent">#b7f2f7ff</color>
+    <color name="light_transparent_high">#0ff2f7ff</color>
+    <color name="light_transparent_high_twice">#03f2f7ff</color>
+
+    <color name="light_transparent_vicinity">#25f2f7ff</color>
+
+    <color name="dark">#0a0f18</color>
+    <color name="darker">#070b12</color>
+    <color name="trans_dark">#b40a0f18</color>
+    <color name="trans_dark_high">#4b0a0f18</color>
+    <color name="dark_transparent">#b40a0f18</color>
+    <color name="dark_transparent_high">#4b0a0f18</color>
+    <color name="dark_transparent_high_twice">#c80a0f18</color>
+
+    <color name="transparent">@android:color/transparent</color>
+
+    <color name="default_color_background">#237DAE</color>
+
+</resources>

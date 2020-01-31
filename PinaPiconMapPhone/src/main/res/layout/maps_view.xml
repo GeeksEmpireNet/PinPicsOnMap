@@ -1,0 +1,246 @@
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 1/29/20 4:08 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mapView"
+    tools:context="com.orientation.compasshd.Maps.PhoneMapsView">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/currentLocation"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginTop="27dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:enabled="false"
+        android:src="@drawable/ripple_effect_location"
+        android:background="@android:color/transparent"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/switchCamera"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="27dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/ripple_effect_switch"
+        android:background="@android:color/transparent"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/weatherIconView"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="27dp"
+        android:padding="3dp"
+        android:layout_toEndOf="@id/switchCamera"
+        android:scaleType="centerCrop"
+        android:background="@drawable/draw_weather_background"
+        android:visibility="invisible" />
+
+    <net.geeksempire.loadingspin.SpinKitView
+        android:id="@+id/weatherSpinLoading"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="27dp"
+        android:padding="7dp"
+        android:layout_toEndOf="@id/switchCamera"
+        android:visibility="visible"
+        android:background="@drawable/draw_weather_background"
+        app:SpinKit_Style="RotatingCircle"
+        app:SpinKit_Color="@color/default_color_light"/>
+
+    <TextView
+        android:id="@+id/weatherInfoView"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="27dp"
+        android:paddingStart="7dp"
+        android:paddingEnd="7dp"
+        android:layout_toEndOf="@id/weatherIconView"
+        android:layout_toStartOf="@id/currentLocation"
+        android:gravity="center"
+        android:text="@string/weatherLoading"
+        android:textColor="@color/default_color_light"
+        android:textSize="13sp"
+        android:typeface="monospace"
+        android:background="@drawable/draw_weather_background"
+        android:visibility="invisible" />
+
+    <net.geeksempire.loadingspin.SpinKitView
+        android:id="@+id/weatherSpinLoadingInfo"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="27dp"
+        android:padding="7dp"
+        android:layout_toEndOf="@id/weatherIconView"
+        android:layout_toStartOf="@id/currentLocation"
+        android:gravity="center"
+        android:visibility="visible"
+        android:background="@drawable/draw_weather_background"
+        app:SpinKit_Style="Wave"
+        app:SpinKit_Color="@color/default_color_light" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/syncCloud"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="57dp"
+        android:layout_marginStart="9dp"
+        android:visibility="invisible"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        android:textColor="@color/light"
+        android:text="@string/cloudBackup"
+        android:typeface="monospace"
+        app:cornerRadius="21dp"
+        app:icon="@drawable/secure_backup"
+        app:iconGravity="textStart"
+        app:iconSize="27dp"
+        app:iconTint="@color/default_color_game"
+        app:backgroundTint="@color/default_color"
+        app:rippleColor="@color/default_color_game" />
+
+    <ImageView
+        android:id="@+id/captureButton"
+        android:layout_width="79dp"
+        android:layout_height="79dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="137dp"
+        android:src="@drawable/ripple_effect_capture"
+        android:visibility="invisible"
+        android:background="@android:color/transparent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pickGallery"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="73dp"
+        android:layout_height="59dp"
+        android:lines="1"
+        android:ellipsize="end"
+        android:textAllCaps="false"
+        android:text="@string/pickGallery"
+        android:textSize="17sp"
+        android:textColor="@color/light"
+        android:visibility="invisible"
+        android:background="@android:color/transparent"
+        app:icon="@drawable/pic_pinned_done"
+        app:iconTint="@color/light"
+        app:iconGravity="textStart"
+        app:rippleColor="@color/dark_transparent_high"
+        app:iconSize="37dp"
+        app:backgroundTint="@color/default_color_darker_transparent"
+        app:elevation="7dp"
+        app:cornerRadius="31dp" />
+
+    <net.geeksempire.loadingspin.SpinKitView
+        android:id="@+id/saveImageLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        android:background="@android:color/transparent"
+        app:SpinKit_Style="ThreeBounce" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/chatWithPeople"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="57dp"
+        android:layout_marginEnd="9dp"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        android:textColor="@color/light"
+        android:typeface="monospace"
+        android:visibility="invisible"
+        app:cornerRadius="21dp"
+        app:icon="@drawable/people_heads"
+        app:iconGravity="textEnd"
+        app:iconSize="37dp"
+        app:iconTint="@android:color/transparent"
+        app:iconTintMode="add"
+        app:backgroundTint="@color/default_color"
+        app:rippleColor="@color/default_color_game" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/chatWithPeopleHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="9dp"
+        android:layout_above="@id/chatWithPeople"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        android:textColor="@color/light"
+        android:typeface="monospace"
+        android:visibility="invisible"
+        app:cornerRadius="21dp"
+        app:icon="@drawable/chat_history_icon"
+        app:iconGravity="textEnd"
+        app:iconSize="37dp"
+        app:iconTint="@android:color/transparent"
+        app:backgroundTint="@color/default_color"
+        app:rippleColor="@color/default_color_game" />
+
+    <RelativeLayout
+        android:id="@+id/uploadingWait"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/default_color_transparent"
+        android:visibility="invisible">
+
+        <net.geeksempire.loadingspin.SpinKitView
+            android:id="@+id/spinLoading"
+            android:layout_width="237dp"
+            android:layout_height="237dp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            app:SpinKit_Style="CubeGrid"
+            app:SpinKit_Color="@color/default_color_game" />
+
+        <TextView
+            android:id="@+id/loadingState"
+            android:layout_width="237dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textColor="@color/light"
+            android:textSize="13sp"
+            android:background="@android:color/transparent" />
+    </RelativeLayout>
+
+</RelativeLayout>

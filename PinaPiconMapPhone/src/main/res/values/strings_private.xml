@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 1/28/20 1:43 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<resources>
+
+    <string name="google_map_api_key" translatable="false">AIzaSyA2ilsMuffo0SE_KZDCjZNfxTpKTRgeJ9Q</string>
+    <string name="webClientId" translatable="false">911032238335-m7ei42f8q5fpm8vmno1u2knb74etkjvb.apps.googleusercontent.com</string>
+    <string name="openMapWeather" translatable="false">ffbf565ad6805c4142c39c518b370b7e</string>
+
+</resources>

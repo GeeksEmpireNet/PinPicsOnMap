@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 1/28/20 1:43 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<resources>
+
+    <string name="supportCategory" translatable="false">Support Center</string>
+    <string name="support" translatable="false">Support@GeeksEmpire.net</string>
+    <string name="feedback_tag" translatable="false">Pin Pics On Map Direct Help | Feedback</string>
+
+    <string name="freeSubscriber">FreeSubscriber</string>
+
+    <string name="agreed"> Done ✔ </string>
+    <string name="agreement">User Agreement</string>
+    <string name="policy">Privacy Policy</string>
+
+    <string name="like_facebook" translatable="false">Facebook</string>
+    <string name="like_instagram" translatable="false">Instagram</string>
+    <string name="whatsnew" translatable="false">What\'s New…</string>
+    <string name="changelog" translatable="false">
+        <![CDATA[
+        🔵 <big><b>Chat With People</b> 👩 👦 </big><br/>
+        &bull; Connect To People Who Already Been In The Place You Are Visiting 🏞  <br/>
+        &bull; Chat With Locals Or Tourists To Get Information & More <br/>
+        &bull; Click On Top Bar To See List Of All People <br/>
+        🔵 <b>Pin a Pic on Map</b> | <small>Google Map as your Personal Photo Album</small><br/>
+        &bull; Take a Picture & App will automatically Pin it to Location on Google Map (Privately)<br/>
+        &bull; Press on Pinned Mark to See a Pic then Press<br/>
+        &bull; & Hold to see location on Google StreetView<br/>
+        <br/><br/>
+        /* <b>Please, Share & Follow App Page to Support my Projects</b> ⭐👍 */
+        <br/>
+        ]]>
+    </string>
+    <string name="rate" translatable="false">Please Rate &amp; Write Review</string>
+    <string name="updateAvailable" translatable="false">New Update Available | Click Here to Install…!</string>
+
+    <string name="floatingshortcuts" translatable="false">Floating Shortcuts</string>
+    <string name="supershortcuts" translatable="false">Super Shortcuts</string>
+
+    <string name="invitation_deep_link" translatable="false">https://gtb44.app.goo.gl/mxGI</string>
+    <string name="invitation_custom_image" translatable="false">https://lh3.googleusercontent.com/is1VZutKAyM4Ox0oWR9VBuYwi8gh5dLonBjF8WjBQ5TwgqTkIrc-V51qrKsbDDg9jw=w300-rw</string>
+
+    <string name="link_facebook" translatable="false">https://www.facebook.com/PinPicsOnMap</string>
+    <string name="link_instagram" translatable="false">https://www.instagram.com/pinpicsonmap/</string>
+
+    <string name="link_facebook_app" translatable="false">https://www.facebook.com/PinPicsOnMap/</string>
+    <string name="link_gx" translatable="false">https://play.google.com/store/apps/dev?id=8263190182709725073</string>
+    <string name="link_compass" translatable="false">https://play.google.com/store/apps/details?id=com.orientation.compasshd</string>
+    <string name="link_alpha" translatable="false">https://play.google.com/apps/testing/com.orientation.compasshd</string>
+    <string name="link_xda" translatable="false">http://goo.gl/1R5VXh</string>
+    <string name="link_shortcuts" translatable="false">https://play.google.com/store/apps/details?id=net.geekstools.floatshort.PRO</string>
+    <string name="link_super" translatable="false">https://play.google.com/store/apps/details?id=net.geekstools.supershortcuts.PRO</string>
+    <string name="play_store_link" translatable="false">https://play.google.com/store/apps/details?id=</string>
+
+    <string name="ad_app_id" translatable="false">ca-app-pub-2920235108594210~4240753885</string>
+    <string name="AdUnitBanner" translatable="false">ca-app-pub-2920235108594210/5717487083</string>
+    <string name="AdUnitSettingGUI" translatable="false">ca-app-pub-2920235108594210/3450177082</string>
+    <string name="AdUnitMapsView" translatable="false">ca-app-pub-2920235108594210/6247894259</string>
+
+    <string name="GroupChatAction" translatable="false">Group_Chat_Action</string>
+    <string name="IndividualChatAction" translatable="false">Individual_Chat_Action</string>
+    <string name="integerVersionCodeNewUpdatePhone" translatable="false">integer_version_code_new_update_phone</string>
+    <string name="stringVersionNameNewUpdatePhone" translatable="false">string_version_name_new_update_phone</string>
+    <string name="stringUpcomingChangeLogPhone" translatable="false">string_upcoming_change_log_phone</string>
+    <string name="stringUpcomingChangeLogSummaryPhone" translatable="false">string_upcoming_change_log_summary_phone</string>
+
+    <string name="BETAintegerVersionCodeNewUpdatePhone" translatable="false">beta_integer_version_code_new_update_phone</string>
+    <string name="BETAstringVersionNameNewUpdatePhone" translatable="false">beta_string_version_name_new_update_phone</string>
+    <string name="BETAstringUpcomingChangeLogPhone" translatable="false">beta_string_upcoming_change_log_phone</string>
+    <string name="BETAstringUpcomingChangeLogSummaryPhone" translatable="false">beta_string_upcoming_change_log_summary_phone</string>
+
+    <string name="newDataEmail">new_data_email</string>
+
+</resources>

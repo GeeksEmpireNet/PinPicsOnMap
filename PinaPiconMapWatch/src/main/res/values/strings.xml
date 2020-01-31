@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 11/11/19 7:26 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<resources>
+
+    <string name="app_name">Pin Pics On Map</string>
+    <string name="compass">Compass</string>
+    <string name="weather">Weather Information</string>
+    <string name="full_app_name">Pin a Picture on Map</string>
+
+    <string name="streetError">StreetView is not available for this location.\nYou can Change your Location on Map.</string>
+
+    <string name="permission_title">
+        <![CDATA[
+            <b>Compass &amp; Weather</b> Permissions Info
+        ]]>
+    </string>
+    <string name="permission_msg">
+        <![CDATA[
+            <b>Hi</b>&#8230; &#9786;<br/>
+            To Open Compass App inside a <b>Floating Window on Top of other Apps</b>, I need your Permission. Please Grant Permission by Turning ON the Switch &amp; Click on Notification!<br/>
+            <b>Enjoy your Journey</b>!
+        ]]>
+    </string>
+
+    <string name="bindDesc">Stability Service. It will Remove Automatically.</string>
+
+</resources>

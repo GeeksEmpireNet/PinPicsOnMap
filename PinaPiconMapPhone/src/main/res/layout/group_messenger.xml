@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 11/11/19 7:26 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark"
+    android:id="@+id/fullMessageView">
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:background="@color/darker"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/AdUnitBanner" />
+
+    <RelativeLayout
+        android:id="@+id/chatToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/adView"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="@color/light">
+
+        <net.geekstools.imageview.customshapes.ShapesImage
+            android:id="@+id/chatLogo"
+            android:layout_width="51dp"
+            android:layout_height="51dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="19dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/draw_people_heads"
+            android:background="@android:color/transparent"
+            app:shape="circle" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/goTo"
+            android:layout_width="wrap_content"
+            android:layout_height="51dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="19dp"
+            android:layout_centerVertical="true"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textColor="@color/light"
+            android:typeface="monospace"
+            app:elevation="21dp"
+            app:cornerRadius="21dp"
+            app:icon="@drawable/search_location"
+            app:iconGravity="textEnd"
+            app:iconSize="31dp"
+            app:iconTint="@android:color/transparent"
+            app:iconTintMode="add"
+            app:backgroundTint="@color/default_color"
+            app:rippleColor="@color/default_color_game"
+            app:strokeWidth="1dp" />
+
+        <TextView
+            android:id="@+id/chatSummary"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="11dp"
+            android:layout_marginEnd="11dp"
+            android:layout_toStartOf="@id/goTo"
+            android:layout_toEndOf="@id/chatLogo"
+            android:padding="7dp"
+            android:gravity="center_vertical|start"
+            android:textSize="13sp"
+            android:background="@android:color/transparent" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/messageTypeSend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp"
+        android:background="@color/transparent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputMessageEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="1dp"
+            android:gravity="center_vertical"
+            android:imeOptions="actionSend"
+            android:hint="@string/connectToPeople"
+            android:textColorHint="@color/default_color_light"
+            app:boxBackgroundMode="outline"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:boxCornerRadiusTopStart="7dp"
+            app:boxCornerRadiusTopEnd="7dp"
+            app:boxCornerRadiusBottomStart="7dp"
+            app:boxCornerRadiusBottomEnd="7dp"
+            app:boxStrokeColor="@color/default_color_game"
+            app:boxStrokeWidth="2dp"
+            app:hintEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:hintTextColor="@color/default_color_light"
+            app:errorEnabled="true"
+            app:errorTextColor="@color/red">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/messageEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="9dp"
+                android:gravity="center_vertical"
+                android:imeOptions="actionSend"
+                android:textSize="19sp"
+                android:textColor="@color/dark"
+                android:textColorHint="@color/dark"
+                android:cursorVisible="true"
+                android:focusable="true"
+                android:enabled="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendButton"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_below="@id/textInputMessageEditText"
+            android:layout_marginTop="-17dp"
+            android:textAllCaps="false"
+            android:text="@string/sendMessage"
+            android:textColor="@color/light"
+            android:textSize="13sp"
+            android:enabled="false"
+            app:elevation="7dp"
+            app:cornerRadius="3dp"
+            app:backgroundTint="@color/default_color"
+            app:rippleColor="@color/default_color_game"
+            app:icon="@drawable/send_icon"
+            app:iconTint="@color/light"
+            app:iconSize="29dp"
+            app:iconGravity="textEnd" />
+
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/chatToolbar"
+        android:layout_above="@+id/messageTypeSend"
+        android:cacheColorHint="@android:color/transparent"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="3dp"
+        android:requiresFadingEdge="vertical"
+        android:scrollbars="none"
+        android:smoothScrollbar="true"
+        android:background="@color/transparent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/messageRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alwaysDrawnWithCache="true"
+                android:drawSelectorOnTop="true"
+                android:isScrollContainer="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingTop="5dp"
+                android:paddingStart="19dp"
+                android:paddingEnd="19dp"
+                android:persistentDrawingCache="animation|scrolling"
+                android:saveEnabled="true"
+                android:background="@color/transparent" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollViewPeople"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/chatToolbar"
+        android:layout_above="@+id/messageTypeSend"
+        android:cacheColorHint="@android:color/transparent"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="3dp"
+        android:requiresFadingEdge="vertical"
+        android:scrollbars="none"
+        android:smoothScrollbar="true"
+        android:background="@color/transparent"
+        android:visibility="invisible">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="@color/transparent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/peopleRecyclerView"
+                android:layout_width="293dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:alwaysDrawnWithCache="true"
+                android:drawSelectorOnTop="true"
+                android:isScrollContainer="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingTop="5dp"
+                android:paddingStart="19dp"
+                android:paddingEnd="19dp"
+                android:persistentDrawingCache="animation|scrolling"
+                android:saveEnabled="true"
+                android:background="@color/transparent" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+    <net.geeksempire.loadingspin.SpinKitView
+        android:id="@+id/progressBar"
+        android:layout_width="133dp"
+        android:layout_height="133dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/messageTypeSend"
+        android:layout_marginBottom="33dp"
+        android:padding="33dp"
+        app:SpinKit_Style="CubeGrid"
+        app:SpinKit_Color="@color/default_color_light_transparent" />
+
+</RelativeLayout>

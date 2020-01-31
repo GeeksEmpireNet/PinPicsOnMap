@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 1/29/20 4:08 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.orientation.compasshd">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.compass"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="true" />
+
+    <application
+        android:name=".PinPicsOnMapApplication"
+        android:largeHeap="true"
+        android:allowBackup="true"
+        android:fullBackupContent="false"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:resizeableActivity="false"
+        android:screenOrientation="sensorPortrait"
+        android:theme="@android:style/Theme.DeviceDefault.Light">
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_map_api_key" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notification" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/default_color" />
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/ad_app_id" />
+
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            tools:replace="android:theme" />
+
+        <activity
+            android:name=".Maps.TimeCheckMap"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@drawable/ic_launcher_round"
+            android:theme="@android:style/Theme.NoDisplay" />
+        <activity
+            android:name=".Compass.TimeCheckCompass"
+            android:icon="@drawable/ic_launcher_compass"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.geeksempire.net"
+                    android:pathPrefix="/compass.html"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Configuration"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.DeviceDefault.Wallpaper.NoTitleBar" />
+        <activity
+            android:name=".Util.SettingGUI"
+            android:autoVerify="true"
+            android:label="@string/preferencesCompass"
+            android:screenOrientation="sensorPortrait">
+            <intent-filter>
+                <action android:name="compass_preferences" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Maps.PhoneMapsView"
+            android:theme="@style/GeeksEmpire.Material">
+            <intent-filter>
+                <action android:name="pin_pic_map" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Maps.SplitStreetViewMap"
+            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" />
+        <activity
+            android:name=".Util.LoginCheckpoint"
+            android:theme="@android:style/Theme.DeviceDefault.Wallpaper.NoTitleBar" />
+        <activity
+            android:name=".Maps.AddToMap"
+            android:label="@string/full_app_name"
+            android:icon="@drawable/ic_launcher"
+            android:roundIcon="@drawable/ic_launcher_round"
+            android:excludeFromRecents="false"
+            android:theme="@style/GeeksEmpire.Material">
+            <intent-filter>
+                <action android:name="AddToMap" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:mimeType="image/*" />
+
+                <data
+                    android:host="www.geeksempire.net"
+                    android:pathPrefix="/AddToMap.html"
+                    android:scheme="http" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:mimeType="image/*" />
+
+                <data
+                    android:host="www.geeksempire.net"
+                    android:pathPrefix="/AddToMap.html"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Messenger.Group.MessengerGroup"
+            android:theme="@style/GeeksEmpire.Material.Messenger"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="keyboardHidden">
+            <intent-filter>
+                <action android:name="Group_Chat_Action" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Messenger.Individual.MessengerIndividual"
+            android:theme="@style/GeeksEmpire.Material.Messenger"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="keyboardHidden">
+            <intent-filter>
+                <action android:name="Individual_Chat_Action" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Messenger.Util.ChatHistory"
+            android:theme="@style/GeeksEmpire.Material.Messenger" />
+        <activity
+            android:name=".Util.IAP.InAppBilling"
+            android:theme="@style/GeeksEmpire.Material.IAP.DARK">
+            <intent-filter>
+                <action android:name="RESPONSE_OWNED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity-alias
+            android:name=".Alias.PinaPiconMap"
+            android:enabled="true"
+
+            android:label="@string/app_name"
+            android:targetActivity=".Maps.TimeCheckMap">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".Alias.Compass"
+            android:enabled="true"
+            android:icon="@drawable/ic_launcher_compass"
+            android:label="@string/compass"
+            android:targetActivity=".Compass.TimeCheckCompass">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <service
+            android:name=".BindService"
+            android:foregroundServiceType="dataSync" />
+        <service android:name=".Compass.FloatingCompass" />
+        <service android:name=".Compass.FloatingCompassMini" />
+        <service
+            android:name=".Util.CloudNotificationHandler"
+            android:icon="@drawable/ic_notification">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".Util.LocationData.FetchAddressIntentService"
+            android:exported="false" />
+        <service
+            android:name=".Messenger.Util.UserStatesIntentService"
+            android:exported="false" />
+    </application>
+
+</manifest>

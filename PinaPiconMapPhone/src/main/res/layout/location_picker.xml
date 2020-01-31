@@ -1,0 +1,114 @@
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 1/29/20 4:08 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:id="@+id/mapView"
+    tools:context="com.orientation.compasshd.Maps.PhoneMapsView">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/pickedImage"
+        android:layout_width="113dp"
+        android:layout_height="113dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="23dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/adView"
+        android:scaleType="centerCrop"
+        android:enabled="false"
+        android:src="@drawable/pick_image"
+        android:background="@android:color/transparent"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/pickedImageOne"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="23dp"
+        android:layout_alignParentStart="true"
+        android:scaleType="centerCrop"
+        android:enabled="false"
+        android:background="@android:color/transparent"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/pickedImageTwo"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_toEndOf="@id/pickedImageOne"
+        android:layout_marginTop="23dp"
+        android:scaleType="centerCrop"
+        android:enabled="false"
+        android:background="@android:color/transparent"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="11dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginBottom="91dp"
+        android:background="@android:color/transparent"
+        android:weightSum="5">
+
+        <com.google.android.material.button.MaterialButton xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/donePicker"
+            android:layout_width="0dp"
+            android:layout_height="75dp"
+            android:layout_weight="4"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textAllCaps="false"
+            android:text="@string/locationPicked"
+            android:textSize="17sp"
+            android:textColor="@color/default_color"
+            android:visibility="invisible"
+            app:icon="@drawable/pic_pinned_done"
+            app:iconTint="@color/default_color"
+            app:iconGravity="textStart"
+            app:rippleColor="@color/dark_transparent_high"
+            app:iconSize="47dp"
+            app:backgroundTint="@color/light_transparent"
+            app:elevation="7dp"
+            app:cornerRadius="31dp" />
+
+        <ImageView
+            android:id="@+id/currentLocation"
+            android:layout_width="0dp"
+            android:layout_height="75dp"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:src="@drawable/ripple_effect_location"
+            android:background="@android:color/transparent"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <net.geeksempire.loadingspin.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/loading"
+        android:layout_width="113dp"
+        android:layout_height="113dp"
+        android:layout_centerInParent="true"
+        android:paddingBottom="7dp"
+        android:background="@android:color/transparent"
+        app:SpinKit_Style="CubeGrid"
+        app:SpinKit_Color="@color/default_color" />
+
+</RelativeLayout>

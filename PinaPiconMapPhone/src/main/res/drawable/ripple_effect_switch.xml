@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2020 By Geeks Empire.
+  ~
+  ~ Created by Elias Fazel on 1/30/20 4:30 PM
+  ~ Last modified 11/11/19 7:26 PM
+  ~
+  ~ Licensed Under MIT License.
+  ~ https://opensource.org/licenses/MIT
+  -->
+
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/default_color">
+    <item android:drawable="@drawable/ic_switch" />
+    <item
+        android:top="3dp"
+        android:bottom="3dp"
+        android:left="3dp"
+        android:right="3dp"
+        android:id="@android:id/mask">
+        <shape android:shape="oval">
+            <solid android:color="@color/default_color" />
+        </shape>
+    </item>
+</ripple>
