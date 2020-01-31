@@ -503,7 +503,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
             e.printStackTrace()
         }
 
-        if (File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)!!.path, File.separator + "PinPicsOnMap").exists()
+        if (File(externalMediaDirs[0].path, File.separator + "PinPicsOnMap").exists()
                 && functionsClassPreferences.readDefaultPreference("OldUser", true) as Boolean) {
             FunctionsClassDebug.PrintDebug("*** Extrating Old User Data ***")
 
@@ -583,7 +583,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
         }
 
         captureButton.setOnClickListener {
-            val filePath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path,
+            val filePath = File(externalMediaDirs[0].path,
                     File.separator
                             + "PinPicsOnMap"
                             + File.separator
@@ -818,7 +818,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
             functionsClass.savePreference("(${clickedMarker.position.latitude},${clickedMarker.position.longitude})", "LocationDetail", clickedMarker.title)
             functionsClass.savePreference("(${clickedMarker.position.latitude},${clickedMarker.position.longitude})", "CityName", clickedMarker.snippet)
 
-            val filePath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path,
+            val filePath = File(externalMediaDirs[0].path,
                     File.separator
                             + "PinPicsOnMap"
                             + File.separator
@@ -995,7 +995,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
                 val longitude = java.lang.Double.valueOf(positionOnMap[1])
                 val latLng = LatLng(latitude, longitude)
 
-                val filePath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path,
+                val filePath = File(externalMediaDirs[0].path,
                         File.separator
                                 + "PinPicsOnMap"
                                 + File.separator
@@ -1032,7 +1032,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
         readyGoogleMap.setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
             override fun getInfoWindow(marker: Marker): View {
                 cityName = marker.snippet
-                val filePath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path,
+                val filePath = File(externalMediaDirs[0].path,
                         File.separator
                                 + "PinPicsOnMap"
                                 + File.separator
@@ -1192,7 +1192,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
     }
 
     override fun onInfoWindowClick(marker: Marker) {
-        var filePath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path,
+        var filePath = File(externalMediaDirs[0].path,
                 File.separator
                         + "PinPicsOnMap"
                         + File.separator
@@ -1211,7 +1211,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
             }
         } else {
             cityName = marker.snippet
-            filePath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path,
+            filePath = File(externalMediaDirs[0].path,
                     File.separator
                             + "PinPicsOnMap"
                             + File.separator
@@ -1702,7 +1702,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
             val hashKeyCityLocation = HashMap<String, LatLng>()
             FunctionsClassDebug.PrintDebug("*** ${cityNames} | ${savedLocations} ***")
 
-            val listAllFiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)!!.path, File.separator + "PinPicsOnMap").listFiles()
+            val listAllFiles = File(externalMediaDirs[0].path, File.separator + "PinPicsOnMap").listFiles()
             listAllFiles.forEach {
                 FunctionsClassDebug.PrintDebug("*** ${it} ***")
 
@@ -1877,7 +1877,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
                     val cityName: String = functionsClassPreferences.readPreference(location, "CityName", "Unknown Area") as String
                     nameOfCities.add(cityName)
 
-                    val imagesFiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path,
+                    val imagesFiles = File(externalMediaDirs[0].path,
                             File.separator
                                     + "PinPicsOnMap"
                                     + File.separator
@@ -2089,7 +2089,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
                                     /*[Images]*/
                                     /* /sdcard/Pictures/PinPicsOnMap/(Lat,Long)/...File....JPEG */
                                     val fileNameTemporary = fileName.split("_")
-                                    val directoryToImages = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path,
+                                    val directoryToImages = File(externalMediaDirs[0].path,
                                             File.separator
                                                     + "PinPicsOnMap"
                                                     + File.separator
@@ -2099,7 +2099,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
                                     }
                                     firebaseStorageReference
                                             .child("PinPicsOnMap/SubscribedUsers/" + firebaseUser.email + "/" + fileName)
-                                            .getFile(File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path,
+                                            .getFile(File(externalMediaDirs[0].path,
                                                     File.separator
                                                             + "PinPicsOnMap"
                                                             + File.separator

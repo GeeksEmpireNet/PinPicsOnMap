@@ -21,7 +21,10 @@ import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.ResultReceiver
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
@@ -497,7 +500,7 @@ class AddToMap : androidx.fragment.app.FragmentActivity(),
                                             dataSource: DataSource?,
                                             boolean: Boolean
                                     ): Boolean {
-                                        val filePath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path,
+                                        val filePath = File(externalMediaDirs[0].path,
                                                 File.separator
                                                         + "PinPicsOnMap"
                                                         + File.separator
@@ -600,7 +603,7 @@ class AddToMap : androidx.fragment.app.FragmentActivity(),
                                         dataSource: DataSource?,
                                         boolean: Boolean
                                 ): Boolean {
-                                    val filePath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path,
+                                    val filePath = File(externalMediaDirs[0].path,
                                             File.separator
                                                     + "PinPicsOnMap"
                                                     + File.separator
@@ -702,7 +705,7 @@ class AddToMap : androidx.fragment.app.FragmentActivity(),
                                             dataSource: DataSource?,
                                             boolean: Boolean
                                     ): Boolean {
-                                        val filePath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path,
+                                        val filePath = File(externalMediaDirs[0].path,
                                                 File.separator
                                                         + "PinPicsOnMap"
                                                         + File.separator
