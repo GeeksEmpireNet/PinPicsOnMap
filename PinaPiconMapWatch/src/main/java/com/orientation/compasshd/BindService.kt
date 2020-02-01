@@ -24,12 +24,12 @@ class BindService : Service() {
         return null
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        if (Build.VERSION.SDK_INT < 26) {
-            startForeground(333, bindServiceLow())
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        startForeground(333, if (Build.VERSION.SDK_INT < 26) {
+            bindServiceLow()
         } else {
-            startForeground(333, bindServiceHigh())
-        }
+            bindServiceHigh()
+        })
 
         return Service.START_STICKY
     }
@@ -43,24 +43,24 @@ class BindService : Service() {
     }
 
     protected fun bindServiceLow(): Notification {
-        val mBuilder = Notification.Builder(this@BindService)
-        mBuilder.setContentTitle(resources.getString(R.string.full_app_name))
-        mBuilder.setContentText(resources.getString(R.string.bindDesc))
-        mBuilder.setTicker(resources.getString(R.string.full_app_name))
-        mBuilder.setSmallIcon(R.drawable.ic_notification)
-        mBuilder.setColor(resources.getColor(R.color.default_color))
+        val notificationBuilder = Notification.Builder(this@BindService)
+        notificationBuilder.setContentTitle(resources.getString(R.string.full_app_name))
+        notificationBuilder.setContentText(resources.getString(R.string.bindDesc))
+        notificationBuilder.setTicker(resources.getString(R.string.full_app_name))
+        notificationBuilder.setSmallIcon(R.drawable.ic_notification)
+        notificationBuilder.setColor(resources.getColor(R.color.default_color))
 
         val res = resources
         val bitmap = BitmapFactory.decodeResource(res, R.drawable.ic_launcher)
-        mBuilder.setLargeIcon(bitmap)
-        mBuilder.setAutoCancel(false)
+        notificationBuilder.setLargeIcon(bitmap)
+        notificationBuilder.setAutoCancel(false)
 
         val open = Intent(this, TimeCheck::class.java)
         val openApp = PendingIntent.getActivity(this, 0, open, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        mBuilder.setContentIntent(openApp)
+        notificationBuilder.setContentIntent(openApp)
 
-        return mBuilder.build()
+        return notificationBuilder.build()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -70,25 +70,25 @@ class BindService : Service() {
         val notificationChannel = NotificationChannel(packageName, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH)
         notificationManager.createNotificationChannel(notificationChannel)
 
-        val mBuilder = Notification.Builder(this)
+        val notificationBuilder = Notification.Builder(this, packageName)
 
-        mBuilder.setContentTitle(resources.getString(R.string.full_app_name))
-        mBuilder.setContentText(resources.getString(R.string.bindDesc))
-        mBuilder.setTicker(resources.getString(R.string.full_app_name))
-        mBuilder.setSmallIcon(R.drawable.ic_notification)
-        mBuilder.setColor(resources.getColor(R.color.default_color))
+        notificationBuilder.setContentTitle(resources.getString(R.string.full_app_name))
+        notificationBuilder.setContentText(resources.getString(R.string.bindDesc))
+        notificationBuilder.setTicker(resources.getString(R.string.full_app_name))
+        notificationBuilder.setSmallIcon(R.drawable.ic_notification)
+        notificationBuilder.setColor(resources.getColor(R.color.default_color))
 
         val res = resources
         val bM = BitmapFactory.decodeResource(res, R.drawable.ic_launcher)
-        mBuilder.setLargeIcon(bM)
-        mBuilder.setAutoCancel(false)
-        mBuilder.setChannelId(packageName)
+        notificationBuilder.setLargeIcon(bM)
+        notificationBuilder.setAutoCancel(false)
+        notificationBuilder.setChannelId(packageName)
 
         val open = Intent(this, TimeCheck::class.java)
         val openApp = PendingIntent.getActivity(this, 0, open, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        mBuilder.setContentIntent(openApp)
+        notificationBuilder.setContentIntent(openApp)
 
-        return mBuilder.build()
+        return notificationBuilder.build()
     }
 }

@@ -78,7 +78,19 @@
             android:name=".Maps.TimeCheckMap"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@drawable/ic_launcher_round"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.NoDisplay" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.geeksempire.net"
+                    android:pathPrefix="/PinPicsOnMap.html"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Compass.TimeCheckCompass"
             android:icon="@drawable/ic_launcher_compass"

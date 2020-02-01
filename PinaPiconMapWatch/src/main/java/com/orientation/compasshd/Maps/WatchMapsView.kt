@@ -21,11 +21,13 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.location.LocationListener
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
 import android.os.StrictMode
 import android.support.wearable.activity.WearableActivityDelegate
+import android.support.wearable.view.ConfirmationOverlay
 import android.view.View
 import android.widget.TextView
 import com.google.android.gms.location.*
@@ -37,6 +39,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.wearable.intent.RemoteIntent
 import com.orientation.compasshd.R
 import com.orientation.compasshd.Util.Coordinates
 import com.orientation.compasshd.Util.FetchAddressIntentService
@@ -411,7 +414,31 @@ class WatchMapsView : androidx.fragment.app.FragmentActivity(), OnMapReadyCallba
         }
     }
 
-    override fun onInfoWindowClick(marker: Marker) {}
+    override fun onInfoWindowClick(marker: Marker) {
+        val resultReceiver = object : ResultReceiver(Handler()) {
+            override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
+                if (resultCode == RemoteIntent.RESULT_OK) {
+                    ConfirmationOverlay()
+                            .setMessage(getString(R.string.checkImageInPhone))
+                            .setDuration(1000 * 1)
+                            .showOn(this@WatchMapsView)
+
+                } else if (resultCode == RemoteIntent.RESULT_FAILED) {
+
+                } else {
+
+                }
+            }
+        }
+        val intentPlayStore = Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://www.geeksempire.net/PinPicsOnMap.html"))
+                .addCategory(Intent.CATEGORY_BROWSABLE)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        RemoteIntent.startRemoteActivity(
+                applicationContext,
+                intentPlayStore,
+                resultReceiver)
+    }
 
     override fun onInfoWindowLongClick(marker: Marker) {
         val map = Intent(applicationContext, SplitStreetViewMap::class.java)
