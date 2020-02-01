@@ -823,11 +823,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
                             + "PinPicsOnMap"
                             + File.separator
                             + "(${clickedMarker.position.latitude},${clickedMarker.position.longitude})")
-            val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
             val file = File(filePath, locationImagePath)
-            val contentUri = Uri.fromFile(file)
-            mediaScanIntent.data = contentUri
-            this.sendBroadcast(mediaScanIntent)
 
             if (file.exists()) {
                 clickedMarker.remove()
@@ -1492,7 +1488,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
                                 bitmap = snapshot
 
                                 try {
-                                    val filePath = Environment.getExternalStorageDirectory().toString() + "/PinPicsOnMapScreenshot_" + System.currentTimeMillis() + ".JPG"
+                                    val filePath = externalMediaDirs[0].path + "/PinPicsOnMapScreenshot_" + System.currentTimeMillis() + ".JPG"
                                     val imageFile = File(filePath)
                                     val fileOutputStream = FileOutputStream(imageFile)
 
@@ -1506,10 +1502,9 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
                                         if (intent != null) {
                                             val shareIntent = Intent()
                                             shareIntent.action = Intent.ACTION_SEND
-                                            //    shareIntent.setPackage("com.instagram.android")
                                             try {
-                                                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(MediaStore.Images.Media.insertImage(contentResolver, filePath, "@PinPicsOnMap", "#SaveEart #SaveNature")))
-                                                shareIntent.putExtra(Intent.EXTRA_TEXT, "@PinPicsOnMap" + " 🌎 🌏 🌍  " + "#SaveEart #SaveNature");
+                                                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(imageFile))
+                                                shareIntent.putExtra(Intent.EXTRA_TEXT, "@PinPicsOnMap" + "  🌎 🌏 🌍  " + "#SaveEart #SaveNature");
                                             } catch (e: FileNotFoundException) {
                                                 e.printStackTrace()
                                             }
@@ -1522,12 +1517,6 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
                                             intent.data = Uri.parse("market://details?id=" + "com.instagram.android")
                                             startActivity(intent)
                                         }
-
-                                        val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                                        val file = File(filePath)
-                                        val contentUri = Uri.fromFile(file)
-                                        mediaScanIntent.data = contentUri
-                                        sendBroadcast(mediaScanIntent)
 
                                         val bitmapInstagramDefault = BitmapFactory.decodeResource(resources, R.drawable.ic_instagram)
                                         val bitmapChangedInstagramDefault = Bitmap.createScaledBitmap(bitmapInstagramDefault, bitmapInstagramDefault.width / 5, bitmapInstagramDefault.height / 5, false)

@@ -382,7 +382,7 @@ class FunctionsClass @Inject constructor(var context: Context) {
 
     fun takeScreenshot(activity: Activity) {
         try {
-            val filePath = Environment.getExternalStorageDirectory().toString() + "/PinPicsOnMapScreenshot" + ".JPG"
+            val filePath = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.path + "/PinPicsOnMapScreenshot" + ".JPG"
             val v1 = activity.getWindow().getDecorView().getRootView();
             v1.setDrawingCacheEnabled(true)
             val bitmap = Bitmap.createBitmap(v1.getDrawingCache())
