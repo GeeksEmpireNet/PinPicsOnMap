@@ -77,6 +77,7 @@ import com.google.firebase.storage.UploadTask
 import com.google.maps.android.ui.IconGenerator
 import com.orientation.compasshd.BuildConfig
 import com.orientation.compasshd.Maps.MapsExtensions.createViewModelObserver
+import com.orientation.compasshd.Maps.MapsExtensions.extractDataOfExistenceUsers
 import com.orientation.compasshd.Maps.ViewModel.PhoneMapsViewModel
 import com.orientation.compasshd.Messenger.Group.MessengerGroup
 import com.orientation.compasshd.Messenger.Util.ChatHistory
@@ -94,7 +95,6 @@ import java.io.*
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
         OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
@@ -449,10 +449,9 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
 
         if (File(externalMediaDirs[0].path, File.separator + "PinPicsOnMap").exists()
                 && functionsClassPreferences.readDefaultPreference("OldUser", true) as Boolean) {
-            FunctionsClassDebug.PrintDebug("*** Extrating Old User Data ***")
+            FunctionsClassDebug.PrintDebug("*** Extracting Old User Data ***")
 
-            val extractDataOfExistenceUsers: ExtractDataOfExistenceUsers = ExtractDataOfExistenceUsers()
-            extractDataOfExistenceUsers.execute()
+            extractDataOfExistenceUsers(applicationContext, functionsClassPreferences)
         } else {
             functionsClassPreferences.saveDefaultPreference("OldUser", false)
         }
@@ -1495,10 +1494,10 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
     }
 
     @Throws(Exception::class)
-    fun indexAppInfo(cityName: String, temperature: String, conditionIconUrl: String, hrs: Int, mins: Int) {
+    fun indexAppInfo(cityName: String, temperature: String, conditionIconUrl: String, weatherUpdateHours: Int, weatherUpdateMinutes: Int) {
         FirebaseAppIndex.getInstance().removeAll()
 
-        val getCity = "${cityName} | ${temperature}°ᶜ | ${hrs}:${mins}"
+        val getCity = "${cityName} | ${temperature}°ᶜ | ${weatherUpdateHours}:${weatherUpdateMinutes}"
         val getUrl = BASE_URL.buildUpon().appendPath(getCity).build().toString()
 
         val articleToIndex = Indexable.Builder()
@@ -1516,102 +1515,8 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
         startTask.addOnFailureListener { e -> e.printStackTrace() }
     }
 
-    fun getAction(titleForAction: String, urlForAction: String): Action {
+    private fun getAction(titleForAction: String, urlForAction: String): Action {
         return Actions.newView(titleForAction, urlForAction)
-    }
-
-    /*Extract City Names*/
-    private inner class ExtractDataOfExistenceUsers : AsyncTask<Void, Void, HashMap<String, LatLng>>() {
-
-        override fun onPreExecute() {
-
-        }
-
-        override fun doInBackground(vararg params: Void): HashMap<String, LatLng> {
-            val cityNames = arrayListOf<String>()
-            val savedLocations = arrayListOf<LatLng>()
-            val hashKeyCityLocation = HashMap<String, LatLng>()
-            FunctionsClassDebug.PrintDebug("*** ${cityNames} | ${savedLocations} ***")
-
-            val listAllFiles = File(externalMediaDirs[0].path, File.separator + "PinPicsOnMap").listFiles()
-            listAllFiles.forEach {
-                FunctionsClassDebug.PrintDebug("*** ${it} ***")
-
-                val listAllCityNames = it.listFiles()
-                listAllCityNames.forEach { fileName ->
-                    //CityName_
-                    //(latitude,longitude)_
-                    //System.currentTimeMillis().JPEG
-                    val fileNameText = fileName.name
-                    val finalNameTextSplits = fileNameText.split("_")
-
-                    val cityName = finalNameTextSplits[0]
-                    cityNames.add(cityName)
-
-                    val locationText = finalNameTextSplits[1].replace("(", "").replace(")", "").split(",")
-                    val latitude = locationText[0]
-                    val longitude = locationText[1]
-                    val location = LatLng(latitude.toDouble(), longitude.toDouble())
-                    savedLocations.add(location)
-
-                    hashKeyCityLocation[cityName] = location
-                    FunctionsClassDebug.PrintDebug("*** ${finalNameTextSplits[0]} | ${location} ***")
-                }
-            }
-
-            val hashSet = HashSet<String>(cityNames)
-            cityNames.clear()
-            cityNames.addAll(hashSet)
-
-            return hashKeyCityLocation
-        }
-
-        override fun onPostExecute(result: HashMap<String, LatLng>) {
-            FunctionsClassDebug.PrintDebug("*** ExtractCityNamesOfExistenceUsers ${result} ***")
-
-            val usersInformationDataStructure = UsersInformationDataStructure().UserInformationFirestore(
-                    firebaseUser.uid,
-                    firebaseUser.email!!,
-                    firebaseUser.displayName!!,
-                    firebaseUser.photoUrl.toString(),
-                    FieldValue.serverTimestamp(),
-                    true.toString()
-            )
-
-            result.forEach {
-                firestoreDatabase.document(
-                        "PinPicsOnMap/" +
-                                "Messenger/" +
-                                "${PublicVariable.LOCATION_COUNTRY_NAME}/" +
-                                "${it.key/*CityName*/}/" +
-                                "People/" +
-                                "${firebaseUser.uid}/"
-                ).set(usersInformationDataStructure).addOnSuccessListener {
-                    functionsClassPreferences.saveDefaultPreference("OldUser", false)
-
-                }.addOnCanceledListener {
-
-
-                }
-
-                val linkedHashMapUserLocation = LinkedHashMap<Any, Any>()
-                linkedHashMapUserLocation["locationLatitude"] = it.value.latitude
-                linkedHashMapUserLocation["locationLongitude"] = it.value.longitude
-                firestoreDatabase.collection(
-                        "PinPicsOnMap/" +
-                                "Messenger/" +
-                                "${PublicVariable.LOCATION_COUNTRY_NAME}/" +
-                                "${it.key/*CityName*/}/" +
-                                "People/" +
-                                "${firebaseUser.uid}/" +
-                                "Visited-${it.value.latitude}-${it.value.longitude}"
-                ).add(linkedHashMapUserLocation).addOnSuccessListener {
-
-                }.addOnCanceledListener {
-
-                }
-            }
-        }
     }
 
     /* [launchSynchronizationProcess] */
