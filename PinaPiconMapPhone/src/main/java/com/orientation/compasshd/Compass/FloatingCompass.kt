@@ -37,7 +37,9 @@ import com.google.android.gms.location.*
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.orientation.compasshd.BindService
 import com.orientation.compasshd.BuildConfig
+import com.orientation.compasshd.Compass.Adapter.FloatingCompassPopupOptionAdapter
 import com.orientation.compasshd.R
+import com.orientation.compasshd.Util.DataHolder.ListItemsDataHolder
 import com.orientation.compasshd.Util.Functions.FunctionsClass
 import com.orientation.compasshd.Util.Functions.FunctionsClassDebug
 import com.orientation.compasshd.Util.Functions.FunctionsClassPreferences
@@ -45,8 +47,10 @@ import com.orientation.compasshd.Util.LocationData.CompassUtil
 import com.orientation.compasshd.Util.LocationData.Coordinates
 import com.orientation.compasshd.Util.LocationData.FetchAddressIntentService
 import com.orientation.compasshd.Util.LocationData.WeatherJSON
-import com.orientation.compasshd.Util.NavAdapter.NavDrawerItem
-import com.orientation.compasshd.Util.NavAdapter.PopupOptionAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -57,8 +61,6 @@ class FloatingCompass : Service() {
     lateinit var fusedLocationClient: FusedLocationProviderClient
 
     internal lateinit var weatherJSON: WeatherJSON
-
-    var weatherInformationLoaded: Boolean = false
 
     lateinit var windowManager: WindowManager
     lateinit var layoutParams: WindowManager.LayoutParams
@@ -74,6 +76,8 @@ class FloatingCompass : Service() {
     lateinit var frameLayout: FrameLayout
     lateinit var drawerLayout: androidx.drawerlayout.widget.DrawerLayout
     lateinit var drawerListView: ListView
+
+    private var floatingCompassPopupOptionAdapter: FloatingCompassPopupOptionAdapter? = null
 
     var geoDecodeAttempt: Int = 0
 
@@ -284,7 +288,7 @@ class FloatingCompass : Service() {
         registerReceiver(broadcastReceiver, intentFilter)
 
         val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-        firebaseRemoteConfig.setDefaults(R.xml.remote_config_default)
+        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
         firebaseRemoteConfig.fetch(0)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -366,7 +370,6 @@ class FloatingCompass : Service() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext)
         if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //Location Update Listener
-            //https://developers.google.com/android/reference/com/google/android/gms/location/LocationRequest
             val locationRequest = LocationRequest.create()
             locationRequest.interval = 1000
             locationRequest.fastestInterval = 500
@@ -440,7 +443,7 @@ class FloatingCompass : Service() {
 
     fun optionMenu(anchorView: View, intent: Intent) {
         val listPopupWindow = ListPopupWindow(applicationContext)
-        val navDrawerItem = ArrayList<NavDrawerItem>()
+        val navDrawerItem = ArrayList<ListItemsDataHolder>()
         val popupItemsText = arrayOf(
                 getString(R.string.pinmap),
                 getString(R.string.locationfind),
@@ -460,21 +463,22 @@ class FloatingCompass : Service() {
                 4,
                 5)
 
-        navDrawerItem.add(NavDrawerItem(getString(R.string.weatherLoading), getDrawable(R.drawable.w_pref)!!, 0))
+        navDrawerItem.add(ListItemsDataHolder(getString(R.string.weatherLoading), getDrawable(R.drawable.w_pref)!!, 0))
         for (i in popupItemsText.indices) {
-            navDrawerItem.add(NavDrawerItem(popupItemsText[i], popupItemsIcon[i]!!, popupItemsId[i]))
+            navDrawerItem.add(ListItemsDataHolder(popupItemsText[i], popupItemsIcon[i]!!, popupItemsId[i]))
         }
-        val popupOptionAdapter = PopupOptionAdapter(applicationContext, listPopupWindow, navDrawerItem, intent.getStringExtra("time"), anchorView)
+        floatingCompassPopupOptionAdapter = FloatingCompassPopupOptionAdapter(applicationContext, this@FloatingCompass, navDrawerItem, intent.getStringExtra("time"), anchorView)
 
         val Height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 198f, resources.displayMetrics).toInt()
         val Width = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 175f, resources.displayMetrics).toInt()
 
-        listPopupWindow.setAdapter(popupOptionAdapter)
+        listPopupWindow.setAdapter(floatingCompassPopupOptionAdapter)
         listPopupWindow.anchorView = anchorView
         listPopupWindow.width = Width
         listPopupWindow.height = Height
         listPopupWindow.isModal = true
         listPopupWindow.animationStyle = R.style.GeeksEmpire_ListPopup
+
         listPopupWindow.setOnDismissListener {
             navDrawerItem.clear()
 
@@ -499,14 +503,10 @@ class FloatingCompass : Service() {
                 val latitude = this.coordinates.latitude
                 val longitude = this.coordinates.longitude
 
-                Toast.makeText(applicationContext,
-                        functionsClass.locationCityName() +
-                                "\nLatitude: " + latitude + "\nLongitude: " + longitude, Toast.LENGTH_LONG).show()
                 if (latitude != 0.0 && longitude != 0.0) {
                     try {
                         Handler().postDelayed({
-                            val weatherweatherJSONInfo = WeatherweatherJSONInfo()
-                            weatherweatherJSONInfo.execute()
+                            downloadWeatherInformation()
                         }, 333)
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -522,64 +522,42 @@ class FloatingCompass : Service() {
         }
     }
 
-    private inner class WeatherweatherJSONInfo : AsyncTask<Void, Void, String>() {
-        override fun onPreExecute() {
+    fun downloadWeatherInformation() = CoroutineScope(Dispatchers.IO).launch {
+        city = functionsClass.locationCityName()
+        country = functionsClass.getCountryIso()
 
-        }
+        val jsonWeatherLink = ("https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&APPID=" + getString(R.string.openMapWeather))
+        weatherJSON = WeatherJSON(jsonWeatherLink)
+        weatherJSON.fetchJsonFromServer()
 
-        override fun doInBackground(vararg params: Void): String {
-            try {
-                city = functionsClass.locationCityName()
-                country = functionsClass.getCountryIso()
+        weather = weatherJSON.weather
+        temperature = ((weatherJSON.temperature.toDouble() - 273.15).roundToInt()).toString()
+        humidity = weatherJSON.humidity
+        weatherIconLink = weatherJSON.weatherIconUrl
 
-                val jsonWeatherLink = ("https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&APPID=" + getString(R.string.openMapWeather))
-//                val jsonWeatherLink = ("https://api.openweathermap.org/data/2.5/weather?q=" + "London" + "," + "UK" + "&APPID=" + getString(R.string.openMapWeather))
-                weatherJSON = WeatherJSON(jsonWeatherLink)
-             //   weatherJSON.fetchJsonFromServer()
+        Glide.with(applicationContext)
+                .load(weatherIconLink)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(glideException: GlideException?, any: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, boolean: Boolean): Boolean {
 
-                weather = weatherJSON.weather
-                temperature = ((weatherJSON.temperature.toDouble() - 273.15).roundToInt()).toString()
-                humidity = weatherJSON.humidity
-                weatherIconLink = weatherJSON.weatherIconUrl
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
+                        return false
+                    }
 
-            }
+                    override fun onResourceReady(drawable: Drawable?, any: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, dataSource: DataSource?, boolean: Boolean): Boolean {
+                        weatherConditionIcon = functionsClass.drawableToBitmap(drawable!!)
 
-            return "$country -  $city"
-        }
+                        return false
+                    }
+                })
+                .submit()
 
-        override fun onPostExecute(result: String) {
-            println(result)
-            weatherInformationLoaded = true
 
-            Glide.with(applicationContext)
-                    .load(weatherIconLink)
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(
-                                glideException: GlideException?,
-                                any: Any?,
-                                target: com.bumptech.glide.request.target.Target<Drawable>?,
-                                boolean: Boolean
-                        ): Boolean {
+        withContext(Dispatchers.Main) {
+            Toast.makeText(applicationContext,
+                    "${functionsClass.locationCityName()}: ${temperature}°ᶜ" +
+                            "\nLatitude: " + coordinates.latitude + "\nLongitude: " + coordinates.longitude, Toast.LENGTH_LONG).show()
 
-                            return false
-                        }
-
-                        override fun onResourceReady(
-                                drawable: Drawable?,
-                                any: Any?,
-                                target: com.bumptech.glide.request.target.Target<Drawable>?,
-                                dataSource: DataSource?,
-                                boolean: Boolean
-                        ): Boolean {
-                            weatherConditionIcon = functionsClass.drawableToBitmap(drawable!!)
-
-                            return false
-                        }
-                    })
-                    .submit()
+            floatingCompassPopupOptionAdapter?.notifyDataSetChanged()
         }
     }
 }

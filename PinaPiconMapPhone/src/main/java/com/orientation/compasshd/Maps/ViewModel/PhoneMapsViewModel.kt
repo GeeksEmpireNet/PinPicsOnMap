@@ -12,8 +12,8 @@ import kotlin.math.roundToInt
 
 class PhoneMapsViewModel : ViewModel() {
 
-    lateinit var cityName: String
-    lateinit var countryName: String
+    var countryName: String = "UK"
+    var cityName: String = "London"
 
     lateinit var temperature: String
     lateinit var weatherIcon: String
@@ -29,8 +29,8 @@ class PhoneMapsViewModel : ViewModel() {
             cityName = functionsClass.locationCityName()
             countryName = functionsClass.getCountryIso()
 
-            val jsonWeatherLink = ("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "," + countryName + "&APPID=" + context.getString(R.string.openMapWeather))
-//                val jsonWeatherLink = ("https://api.openweathermap.org/data/2.5/weather?q=" + "London" + "," + "UK" + "&APPID=" + getString(R.string.openMapWeather))
+            val jsonWeatherLink
+                    = ("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "," + countryName + "&APPID=" + context.getString(R.string.openMapWeather))
             val weatherJSON = WeatherJSON(jsonWeatherLink)
             weatherJSON.fetchJsonFromServer()
 
@@ -47,6 +47,5 @@ class PhoneMapsViewModel : ViewModel() {
         } finally {
 
         }
-
     }
 }

@@ -51,17 +51,17 @@ import com.google.firebase.firestore.*
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.functions.FirebaseFunctionsException
 import com.google.firebase.messaging.FirebaseMessaging
+import com.orientation.compasshd.Compass.Adapter.PlacesListAdapter
 import com.orientation.compasshd.Messenger.DataStructure.MessagesDataStructures
 import com.orientation.compasshd.Messenger.DataStructure.PeopleDataStructures
 import com.orientation.compasshd.Messenger.Util.UserStatesIntentService
 import com.orientation.compasshd.PinPicsOnMapApplication
 import com.orientation.compasshd.R
+import com.orientation.compasshd.Util.DataHolder.ListItemsDataHolder
 import com.orientation.compasshd.Util.Functions.FunctionsClass
 import com.orientation.compasshd.Util.Functions.FunctionsClassDebug
 import com.orientation.compasshd.Util.Functions.FunctionsClassUI
 import com.orientation.compasshd.Util.Functions.PublicVariable
-import com.orientation.compasshd.Util.NavAdapter.NavDrawerItem
-import com.orientation.compasshd.Util.NavAdapter.PlacesListAdapter
 import kotlinx.android.synthetic.main.group_messenger.*
 import kotlinx.android.synthetic.main.group_messenger.view.*
 import kotlinx.android.synthetic.main.item_group_messeger_all_people.view.*
@@ -856,14 +856,14 @@ class MessengerGroup : Activity() {
 
         goTo.setOnClickListener {
             val popupPlaceType = ListPopupWindow(applicationContext)
-            val navDrawerItem = ArrayList<NavDrawerItem>()
+            val navDrawerItem = ArrayList<ListItemsDataHolder>()
             val popupItemsText = functionsClass.readFromAssets(applicationContext, "place_type")
             val popupItemsIcon = getDrawable(R.drawable.ic_pin_current_day)
 
             FunctionsClassDebug.PrintDebug("*** ${popupItemsText.indices} | ${popupItemsText} ***")
 
             for (i in popupItemsText.indices) {
-                navDrawerItem.add(NavDrawerItem(
+                navDrawerItem.add(ListItemsDataHolder(
                         popupItemsText[i],
                         popupItemsIcon!!,
                         i)

@@ -8,11 +8,11 @@
  * https://opensource.org/licenses/MIT
  */
 
-package com.orientation.compasshd.Util.NavAdapter
+package com.orientation.compasshd.Util.DataHolder
 
 import android.graphics.drawable.Drawable
 
-class NavDrawerItem {
+class ListItemsDataHolder {
 
     internal var title: String
     internal var icon: Drawable

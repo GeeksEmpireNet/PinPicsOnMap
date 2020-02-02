@@ -8,7 +8,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-package com.orientation.compasshd.Util.NavAdapter
+package com.orientation.compasshd.Compass.Adapter
 
 import android.app.Activity
 import android.content.Context
@@ -26,6 +26,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.orientation.compasshd.R
+import com.orientation.compasshd.Util.DataHolder.ListItemsDataHolder
 import com.orientation.compasshd.Util.Functions.FunctionsClass
 import com.orientation.compasshd.Util.LocationData.Coordinates
 import java.util.*
@@ -36,7 +37,7 @@ class PlacesListAdapter : BaseAdapter {
 
     internal var functionClass: FunctionsClass
 
-    lateinit var navDrawerItems: ArrayList<NavDrawerItem>
+    lateinit var listItemsDataHolders: ArrayList<ListItemsDataHolder>
 
     lateinit var coordinates: Coordinates
     lateinit var location: Location
@@ -48,9 +49,9 @@ class PlacesListAdapter : BaseAdapter {
     var longitude: Double = 0.0
     lateinit var time: String
 
-    constructor(context: Context, navDrawerItems: ArrayList<NavDrawerItem>, time: String, coordinates: Coordinates) {
+    constructor(context: Context, listItemsDataHolders: ArrayList<ListItemsDataHolder>, time: String, coordinates: Coordinates) {
         this.context = context
-        this.navDrawerItems = navDrawerItems
+        this.listItemsDataHolders = listItemsDataHolders
         this.coordinates = coordinates
         this.time = time
 
@@ -59,13 +60,13 @@ class PlacesListAdapter : BaseAdapter {
 
         functionClass = FunctionsClass(context)
 
-        icons = Array<ImageView>(navDrawerItems.size) { ImageView(context) }
-        titles = Array<TextView>(navDrawerItems.size) { TextView(context) }
+        icons = Array<ImageView>(listItemsDataHolders.size) { ImageView(context) }
+        titles = Array<TextView>(listItemsDataHolders.size) { TextView(context) }
     }
 
-    constructor(context: Context, navDrawerItems: ArrayList<NavDrawerItem>, time: String, location: Location) {
+    constructor(context: Context, listItemsDataHolders: ArrayList<ListItemsDataHolder>, time: String, location: Location) {
         this.context = context
-        this.navDrawerItems = navDrawerItems
+        this.listItemsDataHolders = listItemsDataHolders
         this.location = location
         this.time = time
 
@@ -74,8 +75,8 @@ class PlacesListAdapter : BaseAdapter {
 
         functionClass = FunctionsClass(context)
 
-        icons = Array<ImageView>(navDrawerItems.size) { ImageView(context) }
-        titles = Array<TextView>(navDrawerItems.size) { TextView(context) }
+        icons = Array<ImageView>(listItemsDataHolders.size) { ImageView(context) }
+        titles = Array<TextView>(listItemsDataHolders.size) { TextView(context) }
     }
 
     init {
@@ -108,8 +109,8 @@ class PlacesListAdapter : BaseAdapter {
         }
 
         popup_item.background = itemRippleDrawable
-        titles[position].text = functionClass.editPlaceType(navDrawerItems[position].getTitle())
-        icons[position].setImageDrawable(navDrawerItems[position].getIcon())
+        titles[position].text = functionClass.editPlaceType(listItemsDataHolders[position].getTitle())
+        icons[position].setImageDrawable(listItemsDataHolders[position].getIcon())
 
         popup_item.setOnClickListener(View.OnClickListener { view ->
             val where = Intent(Intent.ACTION_VIEW)
@@ -118,19 +119,19 @@ class PlacesListAdapter : BaseAdapter {
                     "geo:" + latitude + "," + longitude
                             + "?z=13"
                             + "&"
-                            + "q=" + navDrawerItems[position].getTitle())
+                            + "q=" + listItemsDataHolders[position].getTitle())
             where.setPackage("com.google.android.apps.maps")
             where.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(where)
             println("Latitude: " + latitude + "," + "Longitude: "
-                    + longitude + " >>> " + navDrawerItems[position].getTitle())
+                    + longitude + " >>> " + listItemsDataHolders[position].getTitle())
         })
 
         return convertView
     }
 
     override fun getItem(position: Int): Any {
-        return navDrawerItems[position]
+        return listItemsDataHolders[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -138,6 +139,6 @@ class PlacesListAdapter : BaseAdapter {
     }
 
     override fun getCount(): Int {
-        return navDrawerItems.size
+        return listItemsDataHolders.size
     }
 }

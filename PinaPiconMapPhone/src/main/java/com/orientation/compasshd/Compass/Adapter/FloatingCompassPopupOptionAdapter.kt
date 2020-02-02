@@ -8,13 +8,11 @@
  * https://opensource.org/licenses/MIT
  */
 
-package com.orientation.compasshd.Util.NavAdapter
+package com.orientation.compasshd.Compass.Adapter
 
 import android.app.Activity
-import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.drawable.GradientDrawable
@@ -35,17 +33,17 @@ import com.google.firebase.appindexing.Indexable
 import com.google.firebase.appindexing.builders.Actions
 import com.orientation.compasshd.Compass.FloatingCompass
 import com.orientation.compasshd.Compass.FloatingCompassMini
-import com.orientation.compasshd.Configuration
 import com.orientation.compasshd.Maps.PhoneMapsView
 import com.orientation.compasshd.R
+import com.orientation.compasshd.Util.DataHolder.ListItemsDataHolder
 import com.orientation.compasshd.Util.Functions.FunctionsClass
 import com.orientation.compasshd.Util.Functions.FunctionsClassDebug
 import com.orientation.compasshd.Util.LocationData.Coordinates
 import com.orientation.compasshd.Util.SettingGUI
 import java.util.*
 
-class PopupOptionAdapter(
-        internal var context: Context, internal var listPopupWindow: ListPopupWindow, internal var navDrawerItems: ArrayList<NavDrawerItem>, internal var time: String, internal var anchorView: View) : BaseAdapter() {
+class FloatingCompassPopupOptionAdapter(
+        var context: Context, var floatingCompassInstance: FloatingCompass, var listItemsDataHolders: ArrayList<ListItemsDataHolder>, var time: String, var anchorView: View) : BaseAdapter() {
 
     var functionsClass: FunctionsClass = FunctionsClass(context)
     var coordinates: Coordinates
@@ -67,16 +65,16 @@ class PopupOptionAdapter(
         latitude = coordinates.latitude
         longitude = coordinates.longitude
 
-        icons = Array<ImageView>(navDrawerItems.size) { ImageView(context) }
-        titles = Array<TextView>(navDrawerItems.size) { TextView(context) }
+        icons = Array<ImageView>(listItemsDataHolders.size) { ImageView(context) }
+        titles = Array<TextView>(listItemsDataHolders.size) { TextView(context) }
     }
 
     override fun getCount(): Int {
-        return navDrawerItems.size
+        return listItemsDataHolders.size
     }
 
     override fun getItem(position: Int): Any {
-        return navDrawerItems[position]
+        return listItemsDataHolders[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -112,30 +110,14 @@ class PopupOptionAdapter(
         }
 
         popup_item.background = itemRippleDrawable
-        titles[position].text = navDrawerItems[position].getTitle()
-        icons[position].setImageDrawable(navDrawerItems[position].getIcon())
+        titles[position].text = listItemsDataHolders[position].getTitle()
+        icons[position].setImageDrawable(listItemsDataHolders[position].getIcon())
 
         popup_item.setOnClickListener(View.OnClickListener {
-            val itemId = navDrawerItems[position].getId()
+            val itemId = listItemsDataHolders[position].getId()
             when (itemId) {
                 0 -> {
-                    if (context.checkSelfPermission(
-                                    android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED || context.checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED) {
-                        val p = Intent(context, Configuration::class.java)
-                        p.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        context.startActivity(p)
-
-                        context.sendBroadcast(Intent("Close_Compass"))
-                        return@OnClickListener
-                    } else {
-                        //https://www.google.com/search?q=london+uk+forecast
-                        val Search = Intent(Intent.ACTION_WEB_SEARCH)
-                        Search.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                        Search.putExtra(SearchManager.QUERY, FloatingCompass.country + " " + FloatingCompass.city + " " + "Forecast")
-                        context.startActivity(Search)
-
-                        listPopupWindow.dismiss()
-                    }
+                    floatingCompassInstance.downloadWeatherInformation()
                 }
                 1 -> {
                     if ((context.getSystemService(Context.LOCATION_SERVICE) as LocationManager).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -163,18 +145,15 @@ class PopupOptionAdapter(
                         }
 
                     }
-                    listPopupWindow.dismiss()
                 }
                 2 -> {
                     optionMenuPlaceType(context, anchorView, time, coordinates)
-                    listPopupWindow.dismiss()
                 }
                 3 -> {
                     val set = Intent(context, SettingGUI::class.java)
                     set.putExtra("time", time)
                     set.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     context.startActivity(set)
-                    listPopupWindow.dismiss()
                 }
                 4 -> {
                     try {
@@ -189,12 +168,9 @@ class PopupOptionAdapter(
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-
-                    listPopupWindow.dismiss()
                 }
                 5 -> {
                     context.sendBroadcast(Intent("Close_Compass"))
-                    listPopupWindow.dismiss()
                 }
             }
         })
@@ -264,14 +240,14 @@ class PopupOptionAdapter(
 
     fun optionMenuPlaceType(context: Context, anchorView: View, time: String, coordinates: Coordinates) {
         val popupPlaceType = ListPopupWindow(context)
-        val navDrawerItem = ArrayList<NavDrawerItem>()
+        val navDrawerItem = ArrayList<ListItemsDataHolder>()
         val popupItemsText = functionsClass.readFromAssets(context, "place_type")
         val popupItemsIcon = context.getDrawable(R.drawable.ic_pin_current_day)
 
         FunctionsClassDebug.PrintDebug("*** ${popupItemsText.indices} ***")
 
         for (i in popupItemsText.indices) {
-            navDrawerItem.add(NavDrawerItem(
+            navDrawerItem.add(ListItemsDataHolder(
                     popupItemsText[i],
                     popupItemsIcon!!,
                     i)
@@ -310,6 +286,6 @@ class PopupOptionAdapter(
 
     companion object {
 
-        private val BASE_URL = Uri.parse("https://www.geeksempire.net/compass.html/")
+        private val BASE_URL = Uri.parse("https://www.geeksempire.net/PinPicsOnMap.html/")
     }
 }

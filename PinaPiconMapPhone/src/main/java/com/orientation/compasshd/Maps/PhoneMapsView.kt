@@ -151,15 +151,15 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
     private lateinit var firestoreDatabase: FirebaseFirestore
 
     companion object {
-        private val BASE_URL = Uri.parse("https://www.geeksempire.net/compass.html/")
+        private val BASE_URL = Uri.parse("https://www.geeksempire.net/PinPicsOnMap.html/")
 
         private var LocationXY = LatLng(51.5007424, -0.1247307)
-        internal var switchPhase = 0
-        internal lateinit var cityName: String
-        internal var Latitude: Double = 0.0
-        internal var Longitude: Double = 0.0
+        private var switchPhase = 0
+        private lateinit var cityNameMarker: String
+        private var Latitude: Double = 0.0
+        private var Longitude: Double = 0.0
 
-        var triggerCameraIdle: Boolean = false
+        private var triggerCameraIdle: Boolean = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -257,7 +257,6 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@PhoneMapsView)
         if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //Location Update Listener
-            //https://developers.google.com/android/reference/com/google/android/gms/location/LocationRequest
             val locationRequest = LocationRequest.create()
             locationRequest.interval = 1000
             locationRequest.fastestInterval = 500
@@ -971,7 +970,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
         infoWindowView = layoutInflater.inflate(R.layout.location_info_window, null)
         readyGoogleMap.setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
             override fun getInfoWindow(marker: Marker): View {
-                cityName = marker.snippet
+                cityNameMarker = marker.snippet
                 val filePath = File(externalMediaDirs[0].path,
                         File.separator
                                 + "PinPicsOnMap"
@@ -1150,7 +1149,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
                 startActivity(intent)
             }
         } else {
-            cityName = marker.snippet
+            cityNameMarker = marker.snippet
             filePath = File(externalMediaDirs[0].path,
                     File.separator
                             + "PinPicsOnMap"
