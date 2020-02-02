@@ -11,10 +11,12 @@
 package com.orientation.compasshd.Util
 
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.io.InputStream
-import java.net.HttpURLConnection
 import java.net.URL
+import java.nio.charset.Charset
 
 class WeatherJSON(url: String) {
     var weather = "weather"
@@ -111,28 +113,11 @@ class WeatherJSON(url: String) {
 
     }
 
-    fun fetchJSON() {
-        try {
+    suspend fun fetchJsonFromServer() {
+        withContext(Dispatchers.IO) {
             val url = URL(urlString)
-            val httpURLConnection = url.openConnection() as HttpURLConnection
-            httpURLConnection.readTimeout = 50000
-            httpURLConnection.connectTimeout = 25000
-            httpURLConnection.requestMethod = "GET"
-            httpURLConnection.doInput = true
-            // Starts the query
-            httpURLConnection.connect()
-            val inputStream = httpURLConnection.inputStream
-
-            val data = convertStreamToString(inputStream)
-            readAndParseJSON(data)
-
-            System.out.println("*** $data ***")
-
-            inputStream.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
+            readAndParseJSON(url.readText(Charset.defaultCharset()))
         }
-
     }
 
     private fun convertStreamToString(`is`: InputStream): String {
