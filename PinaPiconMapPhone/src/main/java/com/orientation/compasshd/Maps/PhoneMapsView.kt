@@ -22,7 +22,6 @@ import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import android.location.Location
@@ -44,10 +43,6 @@ import android.widget.Toast
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -81,7 +76,8 @@ import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 import com.google.maps.android.ui.IconGenerator
 import com.orientation.compasshd.BuildConfig
-import com.orientation.compasshd.Compass.FloatingCompass
+import com.orientation.compasshd.Maps.MapsExtensions.createViewModelObserver
+import com.orientation.compasshd.Maps.ViewModel.PhoneMapsViewModel
 import com.orientation.compasshd.Messenger.Group.MessengerGroup
 import com.orientation.compasshd.Messenger.Util.ChatHistory
 import com.orientation.compasshd.Messenger.Util.UserStatesIntentService
@@ -91,7 +87,6 @@ import com.orientation.compasshd.Util.Functions.*
 import com.orientation.compasshd.Util.IAP.InAppBilling
 import com.orientation.compasshd.Util.LocationData.Coordinates
 import com.orientation.compasshd.Util.LocationData.FetchAddressIntentService
-import com.orientation.compasshd.Util.LocationData.WeatherJSON
 import com.orientation.compasshd.Util.UserInformation.UsersInformationDataStructure
 import kotlinx.android.synthetic.main.maps_view.*
 import net.geeksempire.chat.vicinity.Util.FunctionsClass.FunctionsClassSystemCheckpoint
@@ -100,7 +95,6 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.math.roundToInt
 
 class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
         OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
@@ -143,16 +137,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
     private val PREFERENCES_PATH = "/details"
     private val PREFERENCES_KEY = "information"
 
-    internal var country = "UK"
-    internal var city = "London"
-
-    internal lateinit var weatherJSON: WeatherJSON
-    internal lateinit var getCity: String
-    internal lateinit var getUrl: String
-    internal lateinit var temperature: String
-    internal lateinit var humidity: String
-    internal lateinit var weather: String
-    internal lateinit var weatherIcon: String
+    lateinit var phoneMapsViewModel: PhoneMapsViewModel
 
     var geoDecodeAttempt: Int = 0
 
@@ -185,6 +170,16 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
 
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED
+                || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
+                || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+
+            requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE), 111)
+        }
+
         functionsClass = FunctionsClass(applicationContext)
         functionsClassDialogue = FunctionsClassDialogue(this@PhoneMapsView, functionsClassPreferences)
 
@@ -195,6 +190,8 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
         supportMapFragment.retainInstance = true
 
         coordinates = Coordinates(applicationContext)
+
+        phoneMapsViewModel = createViewModelObserver()
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this@PhoneMapsView)
 
@@ -285,8 +282,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
                                             if (PublicVariable.LOCATION_COUNTRY_NAME != null || PublicVariable.LOCATION_CITY_NAME != null) {
                                                 supportMapFragment.getMapAsync(this@PhoneMapsView)
 
-                                                val weatherConditionInfo: WeatherConditionInfo = WeatherConditionInfo()
-                                                weatherConditionInfo.execute()
+                                                phoneMapsViewModel.downloadWeatherInformation(applicationContext)
                                             } else {
                                                 val intent = Intent(this@PhoneMapsView, FetchAddressIntentService::class.java)
                                                 intent.action = "LocationData"
@@ -350,16 +346,10 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
                     }
                 }
             }, null)
-        } else {
-
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), 111)
         }
 
         firebaseFunctions = FirebaseFunctions.getInstance()
-        firebaseUser = FirebaseAuth.getInstance()!!.currentUser!!
+        firebaseUser = FirebaseAuth.getInstance().currentUser!!
 
         if (functionsClass.networkConnection()) {
             val billingClient = BillingClient.newBuilder(this@PhoneMapsView).setListener { billingResult, purchases ->
@@ -430,52 +420,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
 
-        MobileAds.initialize(applicationContext, getString(R.string.ad_app_id))
-        adRequestInterstitial = AdRequest.Builder()
-                .addTestDevice("CDCAA1F20B5C9C948119E886B31681DE")
-                .addTestDevice("D101234A6C1CF51023EE5815ABC285BD")
-                .addTestDevice("65B5827710CBE90F4A99CE63099E524C")
-                .addTestDevice("DD428143B4772EC7AA87D1E2F9DA787C")
-                .addTestDevice("5901E5EE74F9B6652E05621140664A54")
-                .addTestDevice("3E192B3766F6EDE8127A5ADFAA0E7B67")
-                .addTestDevice("F54D998BCE077711A17272B899B44798")
-                .build()
-        interstitialAd = InterstitialAd(this)
-        interstitialAd.adUnitId = getString(R.string.AdUnitMapsView)
-        interstitialAd.setImmersiveMode(true)
-        if (interstitialAd.isLoaded) {
-            FunctionsClassDebug.PrintDebug("*** InterstitialAd Loaded >>> Show ***")
-            interstitialAd.show()
-        } else {
-            FunctionsClassDebug.PrintDebug("*** InterstitialAd Loading ***")
-            interstitialAd.loadAd(adRequestInterstitial)
-        }
-        interstitialAd.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                if (PublicVariable.eligibleToLoadShowAds && googleMapReady) {
-                    interstitialAd.show()
-                }
-            }
-
-            override fun onAdFailedToLoad(errorCode: Int) {
-                if (PublicVariable.eligibleToLoadShowAds) {
-                    interstitialAd.loadAd(adRequestInterstitial)
-                }
-                FunctionsClassDebug.PrintDebug("$$$ Ads Error ${errorCode} $$$")
-            }
-
-            override fun onAdOpened() {
-
-            }
-
-            override fun onAdLeftApplication() {
-
-            }
-
-            override fun onAdClosed() {
-
-            }
-        }
+        setupAdvertising()
 
         firestoreDatabase = FirebaseFirestore.getInstance()
         try {
@@ -685,8 +630,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
         val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 if (intent!!.action == "RELOAD_WEATHER") {
-                    val weatherConditionInfo: WeatherConditionInfo = WeatherConditionInfo()
-                    weatherConditionInfo.execute()
+                    phoneMapsViewModel.downloadWeatherInformation(applicationContext)
                 }
             }
         }
@@ -1237,10 +1181,9 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
     }
 
     override fun onInfoWindowClose(marker: Marker) {
-        val weatherConditionInfo: WeatherConditionInfo = WeatherConditionInfo()
-        weatherConditionInfo.execute()
+        phoneMapsViewModel.downloadWeatherInformation(applicationContext)
 
-        if (captureButton.isShown()) {
+        if (captureButton.isShown) {
             val slideDown = AnimationUtils.loadAnimation(applicationContext, R.anim.slide_down)
             captureButton.startAnimation(slideDown)
             slideDown.setAnimationListener(object : Animation.AnimationListener {
@@ -1556,8 +1499,8 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
     fun indexAppInfo(cityName: String, temperature: String, conditionIconUrl: String, hrs: Int, mins: Int) {
         FirebaseAppIndex.getInstance().removeAll()
 
-        getCity = "${cityName} | ${temperature}°ᶜ | ${hrs}:${mins}"
-        getUrl = BASE_URL.buildUpon().appendPath(getCity).build().toString()
+        val getCity = "${cityName} | ${temperature}°ᶜ | ${hrs}:${mins}"
+        val getUrl = BASE_URL.buildUpon().appendPath(getCity).build().toString()
 
         val articleToIndex = Indexable.Builder()
                 .setName(getCity)
@@ -1576,106 +1519,6 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
 
     fun getAction(titleForAction: String, urlForAction: String): Action {
         return Actions.newView(titleForAction, urlForAction)
-    }
-
-    /*Get Weather Information*/
-    private inner class WeatherConditionInfo : AsyncTask<Void, Void, String>() {
-
-        override fun onPreExecute() {
-            weatherInfoView.visibility = View.VISIBLE
-            weatherIconView.visibility = View.VISIBLE
-        }
-
-        override fun doInBackground(vararg params: Void): String {
-            try {
-                city = functionsClass.locationCityName()
-                country = functionsClass.getCountryIso()
-
-                val jsonWeatherLink = ("https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&APPID=" + getString(R.string.openMapWeather))
-//                val jsonWeatherLink = ("https://api.openweathermap.org/data/2.5/weather?q=" + "London" + "," + "UK" + "&APPID=" + getString(R.string.openMapWeather))
-                weatherJSON = WeatherJSON(jsonWeatherLink)
-                weatherJSON.fetchJSON()
-
-                weather = weatherJSON.weather
-                temperature = ((weatherJSON.temperature.toDouble() - 273.15).roundToInt()).toString()
-                humidity = weatherJSON.humidity
-                weatherIcon = weatherJSON.weatherIconUrl
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-
-            }
-
-            return "$country -  $city"
-        }
-
-        override fun onPostExecute(result: String) {
-            FunctionsClassDebug.PrintDebug("*** ${result} ***")
-            weatherSpinLoading.visibility = View.INVISIBLE
-            weatherSpinLoadingInfo.visibility = View.INVISIBLE
-
-            try {
-                weatherInfoView.text = Html.fromHtml(
-                        "<b><big>" + temperature + "</big></b>" + "<big>°ᶜ</big>" + " | " + weather + "<br/>"
-                                + "" + "\uD83D\uDCA6" + " <small>" + humidity + "%</small>"
-                )
-                weatherIconView.colorFilter = null
-                weatherIconView.setPadding(3, 3, 3, 3)
-                Glide.with(this@PhoneMapsView)
-                        .load(weatherIcon)
-                        .listener(object : RequestListener<Drawable> {
-                            override fun onLoadFailed(
-                                    glideException: GlideException?,
-                                    any: Any?,
-                                    target: com.bumptech.glide.request.target.Target<Drawable>?,
-                                    boolean: Boolean
-                            ): Boolean {
-
-                                return false
-                            }
-
-                            override fun onResourceReady(
-                                    drawable: Drawable?,
-                                    any: Any?,
-                                    target: com.bumptech.glide.request.target.Target<Drawable>?,
-                                    dataSource: DataSource?,
-                                    boolean: Boolean
-                            ): Boolean {
-                                runOnUiThread {
-                                    weatherIconView.setImageDrawable(drawable)
-
-                                    weatherInfoView.setOnClickListener {
-                                        val Search = Intent(Intent.ACTION_WEB_SEARCH)
-                                        Search.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                                        Search.putExtra(SearchManager.QUERY, FloatingCompass.country + " " + FloatingCompass.city + " " + "Forecast")
-                                        startActivity(Search)
-                                    }
-                                    weatherIconView.setOnClickListener {
-                                        val Search = Intent(Intent.ACTION_WEB_SEARCH)
-                                        Search.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                                        Search.putExtra(SearchManager.QUERY, country + " " + city + " " + "Forecast")
-                                        startActivity(Search)
-                                    }
-                                }
-
-                                return false
-                            }
-                        })
-                        .submit()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-            try {
-                indexAppInfo(city, temperature, weatherIcon,
-                        Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
-                        Calendar.getInstance().get(Calendar.MINUTE))
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-
-            }
-        }
     }
 
     /*Extract City Names*/
@@ -2111,5 +1954,54 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
                 }.addOnFailureListener {
                     SyncDataToCloudAll()
                 }
+    }
+
+    private fun setupAdvertising() {
+        MobileAds.initialize(applicationContext, getString(R.string.ad_app_id))
+        adRequestInterstitial = AdRequest.Builder()
+                .addTestDevice("CDCAA1F20B5C9C948119E886B31681DE")
+                .addTestDevice("D101234A6C1CF51023EE5815ABC285BD")
+                .addTestDevice("65B5827710CBE90F4A99CE63099E524C")
+                .addTestDevice("DD428143B4772EC7AA87D1E2F9DA787C")
+                .addTestDevice("5901E5EE74F9B6652E05621140664A54")
+                .addTestDevice("3E192B3766F6EDE8127A5ADFAA0E7B67")
+                .addTestDevice("F54D998BCE077711A17272B899B44798")
+                .build()
+        interstitialAd = InterstitialAd(this)
+        interstitialAd.adUnitId = getString(R.string.AdUnitMapsView)
+        interstitialAd.setImmersiveMode(true)
+        if (interstitialAd.isLoaded) {
+            FunctionsClassDebug.PrintDebug("*** InterstitialAd Loaded >>> Show ***")
+            interstitialAd.show()
+        } else {
+            FunctionsClassDebug.PrintDebug("*** InterstitialAd Loading ***")
+            interstitialAd.loadAd(adRequestInterstitial)
+        }
+        interstitialAd.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                if (PublicVariable.eligibleToLoadShowAds && googleMapReady) {
+                    interstitialAd.show()
+                }
+            }
+
+            override fun onAdFailedToLoad(errorCode: Int) {
+                if (PublicVariable.eligibleToLoadShowAds) {
+                    interstitialAd.loadAd(adRequestInterstitial)
+                }
+                FunctionsClassDebug.PrintDebug("$$$ Ads Error ${errorCode} $$$")
+            }
+
+            override fun onAdOpened() {
+
+            }
+
+            override fun onAdLeftApplication() {
+
+            }
+
+            override fun onAdClosed() {
+
+            }
+        }
     }
 }

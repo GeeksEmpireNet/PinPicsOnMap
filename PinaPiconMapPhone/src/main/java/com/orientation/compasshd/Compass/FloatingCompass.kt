@@ -535,7 +535,7 @@ class FloatingCompass : Service() {
                 val jsonWeatherLink = ("https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&APPID=" + getString(R.string.openMapWeather))
 //                val jsonWeatherLink = ("https://api.openweathermap.org/data/2.5/weather?q=" + "London" + "," + "UK" + "&APPID=" + getString(R.string.openMapWeather))
                 weatherJSON = WeatherJSON(jsonWeatherLink)
-                weatherJSON.fetchJSON()
+             //   weatherJSON.fetchJsonFromServer()
 
                 weather = weatherJSON.weather
                 temperature = ((weatherJSON.temperature.toDouble() - 273.15).roundToInt()).toString()
