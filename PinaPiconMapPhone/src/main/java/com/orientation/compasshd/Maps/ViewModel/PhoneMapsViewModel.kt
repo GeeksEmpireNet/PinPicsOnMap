@@ -26,22 +26,25 @@ class PhoneMapsViewModel : ViewModel() {
         val functionsClass = FunctionsClass(context)
 
         try {
-            cityName = functionsClass.locationCityName()
-            countryName = functionsClass.getCountryIso()
+            functionsClass.locationCityName()?.let {
+                cityName = it
 
-            val jsonWeatherLink
-                    = ("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "," + countryName + "&APPID=" + context.getString(R.string.openMapWeather))
-            val weatherJSON = WeatherJSON(jsonWeatherLink)
-            weatherJSON.fetchJsonFromServer()
+                countryName = functionsClass.getCountryIso()
 
-            val weather = weatherJSON.weather
-            val humidity = weatherJSON.humidity
+                val jsonWeatherLink
+                        = ("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "," + countryName + "&APPID=" + context.getString(R.string.openMapWeather))
+                val weatherJSON = WeatherJSON(jsonWeatherLink)
+                weatherJSON.fetchJsonFromServer()
 
-            temperature = ((weatherJSON.temperature.toDouble() - 273.15).roundToInt()).toString()
-            weatherIcon = weatherJSON.weatherIconUrl
+                val weather = weatherJSON.weather
+                val humidity = weatherJSON.humidity
 
-            weatherInformation.postValue("<b><big>" + temperature + "</big></b>" + "<big>°ᶜ</big>" + " | " + weather + "<br/>"
-                    + "" + "\uD83D\uDCA6" + " <small>" + humidity + "%</small>")
+                temperature = ((weatherJSON.temperature.toDouble() - 273.15).roundToInt()).toString()
+                weatherIcon = weatherJSON.weatherIconUrl
+
+                weatherInformation.postValue("<b><big>" + temperature + "</big></b>" + "<big>°ᶜ</big>" + " | " + weather + "<br/>"
+                        + "" + "\uD83D\uDCA6" + " <small>" + humidity + "%</small>")
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {

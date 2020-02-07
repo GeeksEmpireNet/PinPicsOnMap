@@ -74,19 +74,19 @@ class FunctionsClass @Inject constructor(var context: Context) {
     }
 
     /*Location Info*/
-    fun locationDetail(): String {
+    fun locationDetail(): String? {
 
-        return PublicVariable.LOCATION_INFO_DETAIL.toString()
+        return PublicVariable.LOCATION_INFO_DETAIL
     }
 
-    fun locationCountryName(): String {
+    fun locationCountryName(): String? {
 
-        return PublicVariable.LOCATION_COUNTRY_NAME.toString()
+        return PublicVariable.LOCATION_COUNTRY_NAME
     }
 
-    fun locationCityName(): String {
+    fun locationCityName(): String? {
 
-        return PublicVariable.LOCATION_CITY_NAME.toString()
+        return PublicVariable.LOCATION_CITY_NAME
     }
 
     /*Maps*/

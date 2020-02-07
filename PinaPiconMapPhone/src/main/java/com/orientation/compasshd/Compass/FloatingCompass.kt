@@ -523,41 +523,44 @@ class FloatingCompass : Service() {
     }
 
     fun downloadWeatherInformation() = CoroutineScope(Dispatchers.IO).launch {
-        city = functionsClass.locationCityName()
-        country = functionsClass.getCountryIso()
+         functionsClass.locationCityName()?.let {
+             city = it
 
-        val jsonWeatherLink = ("https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&APPID=" + getString(R.string.openMapWeather))
-        weatherJSON = WeatherJSON(jsonWeatherLink)
-        weatherJSON.fetchJsonFromServer()
+             country = functionsClass.getCountryIso()
 
-        weather = weatherJSON.weather
-        temperature = ((weatherJSON.temperature.toDouble() - 273.15).roundToInt()).toString()
-        humidity = weatherJSON.humidity
-        weatherIconLink = weatherJSON.weatherIconUrl
+             val jsonWeatherLink = ("https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&APPID=" + getString(R.string.openMapWeather))
+             weatherJSON = WeatherJSON(jsonWeatherLink)
+             weatherJSON.fetchJsonFromServer()
 
-        Glide.with(applicationContext)
-                .load(weatherIconLink)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(glideException: GlideException?, any: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, boolean: Boolean): Boolean {
+             weather = weatherJSON.weather
+             temperature = ((weatherJSON.temperature.toDouble() - 273.15).roundToInt()).toString()
+             humidity = weatherJSON.humidity
+             weatherIconLink = weatherJSON.weatherIconUrl
 
-                        return false
-                    }
+             Glide.with(applicationContext)
+                     .load(weatherIconLink)
+                     .listener(object : RequestListener<Drawable> {
+                         override fun onLoadFailed(glideException: GlideException?, any: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, boolean: Boolean): Boolean {
 
-                    override fun onResourceReady(drawable: Drawable?, any: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, dataSource: DataSource?, boolean: Boolean): Boolean {
-                        weatherConditionIcon = functionsClass.drawableToBitmap(drawable!!)
+                             return false
+                         }
 
-                        return false
-                    }
-                })
-                .submit()
+                         override fun onResourceReady(drawable: Drawable?, any: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, dataSource: DataSource?, boolean: Boolean): Boolean {
+                             weatherConditionIcon = functionsClass.drawableToBitmap(drawable!!)
+
+                             return false
+                         }
+                     })
+                     .submit()
 
 
-        withContext(Dispatchers.Main) {
-            Toast.makeText(applicationContext,
-                    "${functionsClass.locationCityName()}: ${temperature}°ᶜ" +
-                            "\nLatitude: " + coordinates.latitude + "\nLongitude: " + coordinates.longitude, Toast.LENGTH_LONG).show()
+             withContext(Dispatchers.Main) {
+                 Toast.makeText(applicationContext,
+                         "${functionsClass.locationCityName()}: ${temperature}°ᶜ" +
+                                 "\nLatitude: " + coordinates.latitude + "\nLongitude: " + coordinates.longitude, Toast.LENGTH_LONG).show()
 
-            floatingCompassPopupOptionAdapter?.notifyDataSetChanged()
+                 floatingCompassPopupOptionAdapter?.notifyDataSetChanged()
+             }
         }
     }
 }

@@ -184,29 +184,31 @@ class MessengerGroup : Activity() {
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this@MessengerGroup)
 
-        val countryNameTopic = countryName.replace(" ", "")
-        val cityNameTopic = cityName.replace(" ", "")
+        val countryNameTopic = functionsClass.locationCountryName()?.replace(" ", "")
+        val cityNameTopic = functionsClass.locationCityName()?.replace(" ", "")
 
-        notificationTopic = "${countryNameTopic}-${cityNameTopic}"
+        if (!countryNameTopic.isNullOrEmpty() && !cityNameTopic.isNullOrEmpty()) {
+            notificationTopic = "${countryNameTopic}-${cityNameTopic}"
 
-        try {
-            FirebaseMessaging.getInstance().subscribeToTopic("${countryNameTopic}-${cityNameTopic}").addOnSuccessListener {
+            try {
+                FirebaseMessaging.getInstance().subscribeToTopic("${countryNameTopic}-${cityNameTopic}").addOnSuccessListener {
 
-                val bundle: Bundle = Bundle()
-                bundle.putString("LocationName", "${countryNameTopic}-${cityNameTopic}")
-                firebaseAnalytics.logEvent(PublicVariable.SUBSCRIBE_TO_TOPIC_SUCCESSFUL, bundle)
-            }.addOnFailureListener {
+                    val bundle: Bundle = Bundle()
+                    bundle.putString("LocationName", "${countryNameTopic}-${cityNameTopic}")
+                    firebaseAnalytics.logEvent(PublicVariable.SUBSCRIBE_TO_TOPIC_SUCCESSFUL, bundle)
+                }.addOnFailureListener {
+
+                    val bundle: Bundle = Bundle()
+                    bundle.putString("LocationName", "${countryNameTopic}-${cityNameTopic}")
+                    firebaseAnalytics.logEvent(PublicVariable.SUBSCRIBE_TO_TOPIC_FAILED, bundle)
+                }
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
 
                 val bundle: Bundle = Bundle()
                 bundle.putString("LocationName", "${countryNameTopic}-${cityNameTopic}")
                 firebaseAnalytics.logEvent(PublicVariable.SUBSCRIBE_TO_TOPIC_FAILED, bundle)
             }
-        } catch (e: IllegalArgumentException) {
-            e.printStackTrace()
-
-            val bundle: Bundle = Bundle()
-            bundle.putString("LocationName", "${countryNameTopic}-${cityNameTopic}")
-            firebaseAnalytics.logEvent(PublicVariable.SUBSCRIBE_TO_TOPIC_FAILED, bundle)
         }
 
         firebaseAuth = FirebaseAuth.getInstance()
@@ -333,8 +335,8 @@ class MessengerGroup : Activity() {
         } else {
             "PinPicsOnMap/" +
                     "Messenger/" +
-                    "${countryName}/" +
-                    "${cityName}/" +
+                    countryName + "/" +
+                    cityName + "/" +
                     "GroupsMessages/"
         }
 

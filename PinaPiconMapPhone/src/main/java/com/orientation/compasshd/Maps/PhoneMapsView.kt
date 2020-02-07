@@ -1021,8 +1021,8 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
             val messagesCollectionReferencePath: String =
                     "PinPicsOnMap/" +
                             "Messenger/" +
-                            "${PublicVariable.LOCATION_COUNTRY_NAME}/" +
-                            "${functionsClass.locationCityName()}/" +
+                            functionsClass.locationCountryName() + "/" +
+                            functionsClass.locationCityName() + "/" +
                             "GroupsMessages/"
 
             val linkedHashMapUserGroupHistory = LinkedHashMap<Any, Any>()
@@ -1030,11 +1030,15 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
             linkedHashMapUserGroupHistory["theChatName"] = "${PublicVariable.LOCATION_COUNTRY_NAME!!}-${functionsClass.locationCityName()}"
             linkedHashMapUserGroupHistory["ISO"] = functionsClass.getCountryIso()
             linkedHashMapUserGroupHistory["CountryName"] = PublicVariable.LOCATION_COUNTRY_NAME!!
-            linkedHashMapUserGroupHistory["CityName"] = functionsClass.locationCityName()
+            functionsClass.locationCityName()?.let {
+                linkedHashMapUserGroupHistory["CityName"] = it
+            }
             linkedHashMapUserGroupHistory["JoinedTime"] = FieldValue.serverTimestamp()
             linkedHashMapUserGroupHistory["lastLocationLatitude"] = LocationXY.latitude
             linkedHashMapUserGroupHistory["lastLocationLongitude"] = LocationXY.longitude
-            linkedHashMapUserGroupHistory["lastLocationDetail"] = functionsClass.locationDetail()
+            functionsClass.locationDetail()?.let {
+                linkedHashMapUserGroupHistory["lastLocationDetail"] = it
+            }
 
             firestoreDatabase.document(
                     "PinPicsOnMap/" +
@@ -1056,8 +1060,8 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
         firestoreDatabase.document(
                 "PinPicsOnMap/" +
                         "Messenger/" +
-                        "${PublicVariable.LOCATION_COUNTRY_NAME}/" +
-                        "${functionsClass.locationCityName()}/" +
+                        functionsClass.locationCountryName() + "/" +
+                        functionsClass.locationCityName() + "/" +
                         "People/" +
                         "${firebaseUser.uid}/"
         ).set(usersInformationDataStructure).addOnSuccessListener {
@@ -1072,12 +1076,14 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
         val linkedHashMapUserLocation = LinkedHashMap<Any, Any>()
         linkedHashMapUserLocation["locationLatitude"] = LocationXY.latitude
         linkedHashMapUserLocation["locationLongitude"] = LocationXY.longitude
-        linkedHashMapUserLocation["locationDetail"] = functionsClass.locationDetail()
+        functionsClass.locationDetail()?.let {
+            linkedHashMapUserLocation["locationDetail"] = it
+        }
         firestoreDatabase.document(
                 "PinPicsOnMap/" +
                         "Messenger/" +
-                        "${PublicVariable.LOCATION_COUNTRY_NAME}/" +
-                        "${functionsClass.locationCityName()}/" +
+                        functionsClass.locationCountryName() + "/" +
+                        functionsClass.locationCityName() + "/" +
                         "People/" +
                         "${firebaseUser.uid}/" +
                         "Places/" +
@@ -1105,27 +1111,29 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
 
 
         /*Subscribe To Topic*/
-        val countryNameTopic = MessengerGroup.countryName.replace(" ", "")
-        val cityNameTopic = MessengerGroup.cityName.replace(" ", "")
+        val countryNameTopic = functionsClass.locationCountryName()?.replace(" ", "")
+        val cityNameTopic = functionsClass.locationCityName()?.replace(" ", "")
 
-        try {
-            FirebaseMessaging.getInstance().subscribeToTopic("${countryNameTopic}-${cityNameTopic}").addOnSuccessListener {
+        if (!countryNameTopic.isNullOrEmpty() && !cityNameTopic.isNullOrEmpty()) {
+            try {
+                FirebaseMessaging.getInstance().subscribeToTopic("${countryNameTopic}-${cityNameTopic}").addOnSuccessListener {
 
-                val bundle: Bundle = Bundle()
-                bundle.putString("LocationName", "${countryNameTopic}-${cityNameTopic}")
-                firebaseAnalytics.logEvent(PublicVariable.SUBSCRIBE_TO_TOPIC_SUCCESSFUL, bundle)
-            }.addOnFailureListener {
+                    val bundle: Bundle = Bundle()
+                    bundle.putString("LocationName", "${countryNameTopic}-${cityNameTopic}")
+                    firebaseAnalytics.logEvent(PublicVariable.SUBSCRIBE_TO_TOPIC_SUCCESSFUL, bundle)
+                }.addOnFailureListener {
+
+                    val bundle: Bundle = Bundle()
+                    bundle.putString("LocationName", "${countryNameTopic}-${cityNameTopic}")
+                    firebaseAnalytics.logEvent(PublicVariable.SUBSCRIBE_TO_TOPIC_FAILED, bundle)
+                }
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
 
                 val bundle: Bundle = Bundle()
                 bundle.putString("LocationName", "${countryNameTopic}-${cityNameTopic}")
                 firebaseAnalytics.logEvent(PublicVariable.SUBSCRIBE_TO_TOPIC_FAILED, bundle)
             }
-        } catch (e: IllegalArgumentException) {
-            e.printStackTrace()
-
-            val bundle: Bundle = Bundle()
-            bundle.putString("LocationName", "${countryNameTopic}-${cityNameTopic}")
-            firebaseAnalytics.logEvent(PublicVariable.SUBSCRIBE_TO_TOPIC_FAILED, bundle)
         }
     }
 

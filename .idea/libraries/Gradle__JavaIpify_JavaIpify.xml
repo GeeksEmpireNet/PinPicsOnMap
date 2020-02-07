@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gradle: JavaIpify.JavaIpify">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/JavaIpify/JavaIpify.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
