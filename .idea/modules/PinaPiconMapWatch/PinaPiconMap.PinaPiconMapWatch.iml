@@ -79,7 +79,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../PinaPiconMapWatch/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../PinaPiconMapWatch/build" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 29 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 30 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: com.google.android.wearable:wearable:2.8.1" level="project" />
     <orderEntry type="module-library">
