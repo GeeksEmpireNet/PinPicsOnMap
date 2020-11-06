@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "911032238335-hv0g7qm3n1cv4paghj5cnpq7cpnvkqfe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orientation.compasshd",
+            "certificate_hash": "1d15eb4e4e7fc488f568267af689e34209fc705f"
+          }
+        },
+        {
           "client_id": "911032238335-540o2657cvmldv1r3719io4j0gqvmmrd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
