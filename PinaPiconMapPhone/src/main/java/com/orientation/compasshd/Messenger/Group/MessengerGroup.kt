@@ -133,8 +133,6 @@ class MessengerGroup : Activity() {
 
         functionsClass = FunctionsClass(applicationContext)
 
-        functionsClassUI.Toast("DI", Gravity.TOP)
-
         time = functionsClass.getTime()
 
         val window = window
@@ -353,6 +351,7 @@ class MessengerGroup : Activity() {
 
         firebaseRecyclerAdapter =
                 object : FirestoreRecyclerAdapter<MessagesDataStructures, MessageViewHolder>(firebaseRecyclerOptions) {
+
                     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): MessageViewHolder {
                         progressBar.visibility = ProgressBar.INVISIBLE
 
@@ -742,7 +741,7 @@ class MessengerGroup : Activity() {
                                 .update(
                                         "theMessageSent", "true"
                                 )
-
+                        
                         val linkedHashMapData: LinkedHashMap<Any, Any> = LinkedHashMap<Any, Any>()
                         linkedHashMapData["topic"] = notificationTopic
                         linkedHashMapData["myUID"] = firebaseUser.uid

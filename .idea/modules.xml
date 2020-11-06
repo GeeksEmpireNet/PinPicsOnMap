@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JavaIpify/JavaIpify.iml" filepath="$PROJECT_DIR$/JavaIpify/JavaIpify.iml" />
-      <module fileurl="file://$PROJECT_DIR$/LoadingSpin/LoadingSpin.iml" filepath="$PROJECT_DIR$/LoadingSpin/LoadingSpin.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/PinaPiconMap.iml" filepath="$PROJECT_DIR$/.idea/PinaPiconMap.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PinaPiconMapPhone/PinaPiconMapPhone.iml" filepath="$PROJECT_DIR$/PinaPiconMapPhone/PinaPiconMapPhone.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PinaPiconMapWatch/PinaPiconMapWatch.iml" filepath="$PROJECT_DIR$/PinaPiconMapWatch/PinaPiconMapWatch.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ShapesCustomImageViewLibrary/ShapesCustomImageViewLibrary.iml" filepath="$PROJECT_DIR$/ShapesCustomImageViewLibrary/ShapesCustomImageViewLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JavaIpify/PinaPiconMap.JavaIpify.iml" filepath="$PROJECT_DIR$/.idea/modules/JavaIpify/PinaPiconMap.JavaIpify.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LoadingSpin/PinaPiconMap.LoadingSpin.iml" filepath="$PROJECT_DIR$/.idea/modules/LoadingSpin/PinaPiconMap.LoadingSpin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PinaPiconMapPhone/PinaPiconMap.PinaPiconMapPhone.iml" filepath="$PROJECT_DIR$/.idea/modules/PinaPiconMapPhone/PinaPiconMap.PinaPiconMapPhone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PinaPiconMapWatch/PinaPiconMap.PinaPiconMapWatch.iml" filepath="$PROJECT_DIR$/.idea/modules/PinaPiconMapWatch/PinaPiconMap.PinaPiconMapWatch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ShapesCustomImageViewLibrary/PinaPiconMap.ShapesCustomImageViewLibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/ShapesCustomImageViewLibrary/PinaPiconMap.ShapesCustomImageViewLibrary.iml" />
     </modules>
   </component>
 </project>

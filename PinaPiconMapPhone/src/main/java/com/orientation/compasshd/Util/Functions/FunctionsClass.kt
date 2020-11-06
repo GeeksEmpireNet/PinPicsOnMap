@@ -20,10 +20,6 @@ import android.graphics.drawable.*
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
-import android.os.Handler
-import android.preference.PreferenceManager
-import android.provider.MediaStore
 import android.telephony.TelephonyManager
 import android.text.Html
 import android.util.DisplayMetrics
@@ -32,6 +28,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.preference.PreferenceManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
@@ -377,48 +374,6 @@ class FunctionsClass @Inject constructor(var context: Context) {
                     e.printStackTrace()
                 }
             }
-        }
-    }
-
-    fun takeScreenshot(activity: Activity) {
-        try {
-            val filePath = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.path + "/PinPicsOnMapScreenshot" + ".JPG"
-            val v1 = activity.getWindow().getDecorView().getRootView();
-            v1.setDrawingCacheEnabled(true)
-            val bitmap = Bitmap.createBitmap(v1.getDrawingCache())
-            v1.setDrawingCacheEnabled(false)
-
-            val imageFile = File(filePath)
-
-            val fileOutputStream = FileOutputStream(imageFile)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
-
-            fileOutputStream.flush()
-            fileOutputStream.close()
-
-            Handler().postDelayed({
-                var intent = context.packageManager.getLaunchIntentForPackage("com.instagram.android")
-                if (intent != null) {
-                    val shareIntent = Intent()
-                    shareIntent.action = Intent.ACTION_SEND
-                    shareIntent.setPackage("com.instagram.android")
-                    try {
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(MediaStore.Images.Media.insertImage(context.contentResolver, filePath, "I Am Happy", "Share Happy!")))
-                    } catch (e: FileNotFoundException) {
-                        e.printStackTrace()
-                    }
-                    shareIntent.type = "image/*"
-                    shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context.startActivity(shareIntent)
-                } else {
-                    intent = Intent(Intent.ACTION_VIEW)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    intent.data = Uri.parse("market://details?id=" + "com.instagram.android")
-                    context.startActivity(intent)
-                }
-            }, 333)
-        } catch (e: Throwable) {
-            e.printStackTrace()
         }
     }
 
