@@ -149,18 +149,13 @@ class FloatingCompass : Service() {
 
         val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
         val configSettings = FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .build()
-        firebaseRemoteConfig.setConfigSettings(configSettings)
-        firebaseRemoteConfig.setDefaults(R.xml.remote_config_default)
-        var cacheExpiration = (13 * 60).toLong()
-        if (firebaseRemoteConfig.info.configSettings.isDeveloperModeEnabled) {
-            cacheExpiration = 0
-        }
-        firebaseRemoteConfig.fetch(cacheExpiration)
+        firebaseRemoteConfig.setConfigSettingsAsync(configSettings)
+        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
+        firebaseRemoteConfig.fetchAndActivate()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        firebaseRemoteConfig.activateFetched()
+
                         if (firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()) > functionsClass.appVersionCode(packageName)) {
                             functionsClass.notificationCreator(
                                     getString(R.string.updateAvailable),
@@ -168,9 +163,8 @@ class FloatingCompass : Service() {
                                     firebaseRemoteConfig.getLong(functionsClass.versionCodeRemoteConfigKey()).toInt()
                             )
                             Toast.makeText(applicationContext, getString(R.string.updateAvailable), Toast.LENGTH_LONG).show()
-                        } else {
                         }
-                    } else {
+
                     }
                 }
 

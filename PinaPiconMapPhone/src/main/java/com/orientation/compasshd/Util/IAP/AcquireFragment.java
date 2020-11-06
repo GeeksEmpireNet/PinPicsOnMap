@@ -127,7 +127,7 @@ public class AcquireFragment extends DialogFragment implements View.OnClickListe
             demoDescription.setTextColor(TimeCheckMap.Companion.getTime().equals("day") ? context.getColor(R.color.dark) : context.getColor(R.color.light));
 
             final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-            firebaseRemoteConfig.setDefaults(R.xml.remote_config_default);
+            firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default);
             firebaseRemoteConfig.fetchAndActivate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
                 @Override
                 public void onSuccess(Boolean aBoolean) {

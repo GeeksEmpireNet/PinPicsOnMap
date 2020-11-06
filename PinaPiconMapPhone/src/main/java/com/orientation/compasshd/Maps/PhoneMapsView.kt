@@ -367,38 +367,39 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
                         functionsClass.savePreference(".SubscribedItem", "donation.subscription", false)
 
                         val purchasesSubscriptions = billingClient.queryPurchases(BillingClient.SkuType.SUBS).purchasesList
-                        FunctionsClassDebug.PrintDebug("*** ${purchasesSubscriptions.size} ***")
 
-                        for (purchase in purchasesSubscriptions) {
-                            FunctionsClassDebug.PrintDebug("*** Purchased Item: $purchase ***")
+                        if (purchasesSubscriptions != null) {
+                            for (purchase in purchasesSubscriptions) {
+                                FunctionsClassDebug.PrintDebug("*** Purchased Item: $purchase ***")
 
-                            //"donation.subscription", "cloud.backup"
-                            if (purchase.sku == "donation.subscription") {
-                                functionsClass.savePreference(".SubscribedItem", "donation.subscription", true)
-                                if (!purchase.isAutoRenewing) {
-                                    val currentTime = System.currentTimeMillis()
-                                    val sixMonth: Long = 15552000000//86400000*30
-                                    if ((currentTime - purchase.purchaseTime) > sixMonth) {
-                                        FunctionsClassDebug.PrintDebug("*** Purchases Subscriptions ::: Cancelled Completely***")
+                                //"donation.subscription", "cloud.backup"
+                                if (purchase.sku == "donation.subscription") {
+                                    functionsClass.savePreference(".SubscribedItem", "donation.subscription", true)
+                                    if (!purchase.isAutoRenewing) {
+                                        val currentTime = System.currentTimeMillis()
+                                        val sixMonth: Long = 15552000000//86400000*30
+                                        if ((currentTime - purchase.purchaseTime) > sixMonth) {
+                                            FunctionsClassDebug.PrintDebug("*** Purchases Subscriptions ::: Cancelled Completely***")
 
-                                        functionsClass.savePreference(".SubscribedItem", "donation.subscription", false)
-                                    } else {
-                                        FunctionsClassDebug.PrintDebug("*** Purchases Subscriptions ::: Not Auto Renew ***")
+                                            functionsClass.savePreference(".SubscribedItem", "donation.subscription", false)
+                                        } else {
+                                            FunctionsClassDebug.PrintDebug("*** Purchases Subscriptions ::: Not Auto Renew ***")
+                                        }
                                     }
                                 }
-                            }
 
-                            if (purchase.sku == "cloud.backup") {
-                                functionsClass.savePreference(".SubscribedItem", "cloud.backup", true)
-                                if (!purchase.isAutoRenewing) {
-                                    val currentTime = System.currentTimeMillis()
-                                    val oneMonth: Long = 2592000000//86400000*30
-                                    if ((currentTime - purchase.purchaseTime) > oneMonth) {
-                                        FunctionsClassDebug.PrintDebug("*** Purchases Subscriptions ::: Cancelled Completely***")
+                                if (purchase.sku == "cloud.backup") {
+                                    functionsClass.savePreference(".SubscribedItem", "cloud.backup", true)
+                                    if (!purchase.isAutoRenewing) {
+                                        val currentTime = System.currentTimeMillis()
+                                        val oneMonth: Long = 2592000000//86400000*30
+                                        if ((currentTime - purchase.purchaseTime) > oneMonth) {
+                                            FunctionsClassDebug.PrintDebug("*** Purchases Subscriptions ::: Cancelled Completely***")
 
-                                        functionsClass.savePreference(".SubscribedItem", "cloud.backup", false)
-                                    } else {
-                                        FunctionsClassDebug.PrintDebug("*** Purchases Subscriptions ::: Not Auto Renew ***")
+                                            functionsClass.savePreference(".SubscribedItem", "cloud.backup", false)
+                                        } else {
+                                            FunctionsClassDebug.PrintDebug("*** Purchases Subscriptions ::: Not Auto Renew ***")
+                                        }
                                     }
                                 }
                             }
@@ -635,7 +636,7 @@ class PhoneMapsView : androidx.fragment.app.FragmentActivity(),
         registerReceiver(broadcastReceiver, intentFilter)
 
         val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-        firebaseRemoteConfig.setDefaults(R.xml.remote_config_default)
+        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
         firebaseRemoteConfig.fetch(0)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {

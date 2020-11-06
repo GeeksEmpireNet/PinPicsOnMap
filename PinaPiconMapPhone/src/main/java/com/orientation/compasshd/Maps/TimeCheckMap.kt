@@ -17,15 +17,10 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.core.CrashlyticsCore
-import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import com.orientation.compasshd.BuildConfig
 import com.orientation.compasshd.Configuration
 import com.orientation.compasshd.Util.Functions.FunctionsClass
 import com.orientation.compasshd.Util.LoginCheckpoint
-import io.fabric.sdk.android.Fabric
 import java.util.*
 
 class TimeCheckMap : Activity() {
@@ -34,13 +29,6 @@ class TimeCheckMap : Activity() {
 
     override fun onCreate(saved: Bundle?) {
         super.onCreate(saved)
-
-        val crashlyticsCore = CrashlyticsCore.Builder()
-                .disabled(BuildConfig.DEBUG)
-                .build()
-        Fabric.with(this, Crashlytics.Builder().core(crashlyticsCore).build())
-
-        FirebaseApp.initializeApp(applicationContext)
 
         functionsClass = FunctionsClass(applicationContext)
         functionsClass.addAppShortcuts()

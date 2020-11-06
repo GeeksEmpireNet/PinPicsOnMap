@@ -76,6 +76,10 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../PinaPiconMapWatch/build/generated/source/kaptKotlin/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../PinaPiconMapWatch/build/generated/source/kaptKotlin/debugAndroidTest" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../PinaPiconMapWatch/build/generated/source/kaptKotlin/debugUnitTest" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../PinaPiconMapWatch/build/generated/res/resValues/debug" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../PinaPiconMapWatch/build/generated/crashlytics/res/debug" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../PinaPiconMapWatch/build/generated/source/kapt/debug" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../PinaPiconMapWatch/build/generated/ap_generated_sources/debug/out" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../PinaPiconMapWatch/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../PinaPiconMapWatch/build" />
     </content>

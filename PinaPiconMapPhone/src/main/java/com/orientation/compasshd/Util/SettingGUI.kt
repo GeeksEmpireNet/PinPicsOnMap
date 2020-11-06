@@ -216,7 +216,7 @@ class SettingGUI : androidx.fragment.app.FragmentActivity() {
     public override fun onStart() {
         super.onStart()
         val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-        firebaseRemoteConfig.setDefaults(R.xml.remote_config_default)
+        firebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_default)
         firebaseRemoteConfig.fetch(0)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -512,7 +512,7 @@ class SettingGUI : androidx.fragment.app.FragmentActivity() {
             }
             REQUEST_SING_GOOGLE -> {
                 val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-                if (result.isSuccess) {
+                if (result!!.isSuccess) {
                     val googleSignInAccount = result.signInAccount
                     if (Google_Sign_In == 2) {
                         onInviteClicked()
